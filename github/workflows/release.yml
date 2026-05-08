@@ -1,0 +1,154 @@
+# =============================================================================
+# .github/workflows/release.yml — RELEASE & DEPLOYMENT PIPELINE
+# =============================================================================
+#
+# PURPOSE:
+#   Triggered when a version tag (v*.*.*) is pushed to the repository.
+#   Builds the optimized WASM bundle, compresses it with Brotli,
+#   and deploys the web app to the CDN / hosting provider.
+#
+# SIZE: ~80 lines
+#
+# TRIGGER EVENTS:
+#   on:
+#     push:
+#       tags:
+#         - 'v*.*.*'           # e.g. v1.0.0, v2.3.1
+#
+# JOBS:
+#
+#   job: release
+#     runs-on: ubuntu-latest
+#     steps:
+#
+#       1. actions/checkout@v4
+#
+#       2. Install Rust toolchain
+#          — dtolnay/rust-toolchain@stable
+#          — targets: wasm32-unknown-unknown
+#
+#       3. Cache cargo artifacts
+#          — actions/cache@v4
+#          — same cache key strategy as ci.yml
+#
+#       4. Install wasm-pack
+#          — curl | sh (official installer)
+#
+#       5. Install wasm-opt (Binaryen)
+#          — apt-get install binaryen
+#          — provides the `wasm-opt` binary
+#
+#       6. wasm-pack build crates/gargantua-app --target web --release
+#          — compiles with [profile.release-wasm] (opt-level = "z")
+#          — output: crates/gargantua-app/pkg/
+#            - gargantua_app_bg.wasm   — the WASM binary
+#            - gargantua_app.js        — JS glue code
+#            - gargantua_app.d.ts      — TypeScript definitions
+#
+#       7. wasm-opt -O3 --strip-debug --strip-producers \
+#            crates/gargantua-app/pkg/gargantua_app_bg.wasm \
+#            -o crates/gargantua-app/pkg/gargantua_app_bg.wasm
+#          — Binaryen optimizer pass on top of rustc's output
+#          — typically reduces WASM size by an additional 10-20%
+#          — -O3: full optimization
+#          — --strip-debug: removes debug name sections
+#          — --strip-producers: removes producer metadata section
+#
+#       8. Brotli compress all assets
+#          — apt-get install brotli
+#          — brotli --quality=11 --keep *.wasm *.js
+#          — quality=11 is maximum Brotli compression (slow but smallest)
+#          — --keep preserves the original file alongside the .br version
+#          — servers must be configured to serve .br files with:
+#              Content-Encoding: br
+#
+#       9. Copy web/index.html into pkg/ alongside WASM files
+#          — web/index.html is the minimal HTML shell (canvas + WASM loader)
+#
+#       10. Deploy to CDN
+#           — uses the appropriate deploy action for the hosting provider
+#             (e.g., actions/deploy-pages@v4 for GitHub Pages, or
+#              a provider-specific action for Cloudflare Pages / Vercel)
+#           — deploys the entire crates/gargantua-app/pkg/ directory
+#           — sets cache headers:
+#               *.wasm, *.wasm.br  → Cache-Control: public, max-age=31536000
+#               *.js               → Cache-Control: public, max-age=31536000
+#               index.html         → Cache-Control: no-cache
+#
+# ENVIRONMENT VARIABLES / SECRETS:
+#   DEPLOY_TOKEN  — CDN/hosting provider API token (stored in GitHub Secrets)
+#
+# ARTIFACTS:
+#   The workflow uploads the pkg/ directory as a GitHub Actions artifact
+#   so the WASM bundle can be downloaded from the GitHub UI for inspection.
+#
+# NOTES FOR AI:
+#   - This workflow only runs on tag pushes, never on branch pushes.
+#   - wasm-opt runs AFTER wasm-pack; both optimization passes are necessary.
+#   - Brotli quality=11 is slow (~minutes for a large WASM file) but
+#     produces the smallest output for CDN delivery. Gzip is not used.
+#   - The .br files are pre-compressed; the server must NOT double-compress.
+#   - web/index.html (gargantua-app crate) contains only a <canvas> element
+#     and the WASM loader script — no framework, no bundler required.
+# =============================================================================
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/
+          key: ubuntu-latest-cargo-release-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Install Binaryen (wasm-opt)
+        run: sudo apt-get install -y binaryen brotli
+
+      - name: Build WASM (release)
+        run: wasm-pack build crates/gargantua-app --target web --release
+
+      - name: Optimize WASM with wasm-opt
+        run: |
+          wasm-opt -O3 --strip-debug --strip-producers \
+            crates/gargantua-app/pkg/gargantua_app_bg.wasm \
+            -o crates/gargantua-app/pkg/gargantua_app_bg.wasm
+
+      - name: Brotli compress
+        run: |
+          cd crates/gargantua-app/pkg
+          brotli --quality=11 --keep *.wasm *.js
+
+      - name: Copy HTML shell
+        run: cp web/index.html crates/gargantua-app/pkg/index.html
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gargantua-wasm-${{ github.ref_name }}
+          path: crates/gargantua-app/pkg/
+
+      - name: Deploy to CDN
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: echo "Deploy step — configure for your CDN provider"

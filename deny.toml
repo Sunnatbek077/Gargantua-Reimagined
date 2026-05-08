@@ -1,0 +1,115 @@
+# =============================================================================
+# deny.toml — DEPENDENCY SECURITY AUDIT & LICENSE POLICY
+# =============================================================================
+#
+# PURPOSE:
+#   Configures cargo-deny, a tool that audits the dependency tree for:
+#     1. Known security vulnerabilities (via RustSec advisory database)
+#     2. Disallowed software licenses
+#     3. Duplicate versions of the same crate
+#     4. Banned crates (unsafe or unwanted dependencies)
+#
+#   Runs in CI via .github/workflows/ci.yml:
+#     `cargo deny check`
+#   Fails the pipeline if any advisory, banned crate, or license violation
+#   is detected.
+#
+# SIZE: ~50 lines
+#
+# SECTIONS:
+#
+#   [advisories]
+#     db-path = "~/.cargo/advisory-db"
+#     db-urls = ["https://github.com/rustsec/advisory-db"]
+#     vulnerability = "deny"    — CVE/vulnerability = hard fail
+#     unmaintained = "warn"     — unmaintained crates = warning only
+#     yanked = "deny"           — yanked crate versions = hard fail
+#     notice = "warn"           — informational notices = warning
+#
+#   [licenses]
+#     unlicensed = "deny"       — crates with no license = hard fail
+#     allow = [
+#       "MIT",
+#       "Apache-2.0",
+#       "Apache-2.0 WITH LLVM-exception",
+#       "ISC",
+#       "Unicode-DFS-2016",     # used by Unicode data crates
+#       "BSD-2-Clause",
+#       "BSD-3-Clause",
+#       "Zlib",
+#       "CC0-1.0",
+#     ]
+#     copyleft = "deny"         — GPL/LGPL/AGPL = hard fail (not allowed)
+#     allow-osi-fsf-free = "neither"
+#
+#   [bans]
+#     multiple-versions = "warn"   — duplicate crate versions = warning
+#     wildcards = "deny"           — wildcard dependency versions = hard fail
+#     highlight = "all"
+#     deny = [
+#       # Banned crates (security risk or incompatible license):
+#       { name = "openssl" },      # use rustls instead
+#       { name = "openssl-sys" },
+#     ]
+#     skip = [
+#       # Known acceptable duplicate versions (transitive conflicts):
+#       # Add entries here if cargo deny complains about a version
+#       # that cannot be resolved without forking a dependency.
+#     ]
+#
+#   [sources]
+#     unknown-registry = "deny"    — crates not from crates.io = hard fail
+#     unknown-git = "deny"         — git dependencies = hard fail
+#     allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+#
+# USED BY:
+#   - .github/workflows/ci.yml  (`cargo deny check` on every PR)
+#
+# NOTES FOR AI:
+#   - cargo-deny must be installed in the CI environment before running.
+#     The CI workflow installs it via: `cargo install cargo-deny`
+#   - openssl is banned; all TLS/crypto must use rustls or ring.
+#   - If a new dependency introduces a duplicate version, add it to
+#     [bans.skip] with a comment explaining why it cannot be resolved.
+#   - License violations block the PR; check crates.io for the license
+#     before adding a new dependency.
+# =============================================================================
+
+[advisories]
+db-path = "~/.cargo/advisory-db"
+db-urls = ["https://github.com/rustsec/advisory-db"]
+vulnerability = "deny"
+unmaintained = "warn"
+yanked = "deny"
+notice = "warn"
+
+[licenses]
+unlicensed = "deny"
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "ISC",
+    "Unicode-DFS-2016",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "Zlib",
+    "CC0-1.0",
+]
+copyleft = "deny"
+allow-osi-fsf-free = "neither"
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+highlight = "all"
+deny = [
+    { name = "openssl" },
+    { name = "openssl-sys" },
+]
+skip = []
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]

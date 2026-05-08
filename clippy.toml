@@ -1,0 +1,86 @@
+# =============================================================================
+# clippy.toml — LINTING RULES
+# =============================================================================
+#
+# PURPOSE:
+#   Configures Clippy, the Rust static analysis tool, with strict rules
+#   that enforce safe and idiomatic Rust across the entire workspace.
+#   In CI (ci.yml), `cargo clippy -- -D warnings` runs on every PR —
+#   any clippy warning is treated as an error and fails the pipeline.
+#
+# SIZE: ~40 lines
+#
+# HOW CLIPPY PICKS UP THIS FILE:
+#   Clippy automatically reads clippy.toml from the workspace root.
+#   Individual crates can override rules via #[allow(clippy::...)] attributes
+#   only when there is a documented reason (e.g., GPU unsafe code).
+#
+# KEY SETTINGS:
+#
+#   msrv = "1.75"
+#     — Minimum Supported Rust Version. Clippy uses this to avoid
+#       suggesting APIs that don't exist in the MSRV.
+#       1.75 is chosen because it introduced async fn in traits (stable),
+#       which is used in the plugin system (gargantua-app/src/plugin/).
+#
+#   cognitive-complexity-threshold = 30
+#     — Functions exceeding this complexity score trigger a warning.
+#       Set to 30 (higher than default 25) because geodesic integrators
+#       and shader pipeline builders are inherently complex.
+#
+#   too-many-arguments-threshold = 8
+#     — Functions with more than 8 parameters trigger a warning.
+#       Raised from default 7 because GPU pipeline descriptors
+#       legitimately require many parameters (device, queue, layout, ...).
+#
+#   too-many-lines-threshold = 120
+#     — Functions longer than 120 lines trigger a warning.
+#       Raised from default 100 for the same reason as above.
+#
+#   type-complexity-threshold = 300
+#     — Maximum allowed type complexity score.
+#       Raised because wgpu types (RenderPipeline, BindGroupLayout, etc.)
+#       are complex generics that inflate the score.
+#
+#   avoid-breaking-exported-api = true
+#     — Clippy will not suggest changes that would break the public API.
+#       Important for gargantua-core and gargantua-physics which are
+#       consumed by all other crates.
+#
+#   allow-print-in-tests = true
+#     — Permits println! inside #[test] blocks for debugging.
+#
+#   allow-unwrap-in-tests = true
+#     — Permits .unwrap() inside #[test] blocks (panic is acceptable in tests).
+#
+#   allow-expect-in-tests = true
+#     — Permits .expect() inside #[test] blocks.
+#
+# WORKSPACE-LEVEL LINT ATTRIBUTES (applied in each crate's lib.rs):
+#   #![deny(clippy::all)]
+#   #![deny(clippy::pedantic)]
+#   #![allow(clippy::module_name_repetitions)]  -- common in Rust crate design
+#   #![allow(clippy::cast_precision_loss)]       -- unavoidable in f32 GPU math
+#   #![allow(clippy::similar_names)]             -- physics uses r, rr, r_s, etc.
+#
+# USED BY:
+#   - .github/workflows/ci.yml  (`cargo clippy -- -D warnings` on every PR)
+#   - Developer local: `cargo clippy` before committing
+#
+# NOTES FOR AI:
+#   - Do not lower cognitive-complexity-threshold; the RK4 integrator
+#     (gargantua-physics/src/geodesic/rk4.rs) and the frame graph
+#     (gargantua-core/src/frame/frame_graph.rs) exceed the default.
+#   - unsafe blocks in platform/ code (Metal, DX12 FFI) are intentional
+#     and suppressed with #[allow(unsafe_code)] + a safety comment.
+# =============================================================================
+
+msrv = "1.75"
+cognitive-complexity-threshold = 30
+too-many-arguments-threshold = 8
+too-many-lines-threshold = 120
+type-complexity-threshold = 300
+avoid-breaking-exported-api = true
+allow-print-in-tests = true
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true

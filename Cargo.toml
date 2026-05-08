@@ -1,0 +1,126 @@
+# =============================================================================
+# Cargo.toml — WORKSPACE ROOT
+# =============================================================================
+#
+# PURPOSE:
+#   The root Cargo manifest for the Gargantua workspace.
+#   Declares all member crates and centralizes dependency versions
+#   via [workspace.dependencies] so every crate uses { workspace = true }.
+#
+# SIZE: ~80 lines
+#
+# STRUCTURE:
+#
+#   [workspace]
+#     resolver = "2"
+#     members = [
+#       "crates/gargantua-core",      # GPU engine, frame graph, platform HAL
+#       "crates/gargantua-physics",   # Kerr metric, geodesic solver, accretion
+#       "crates/gargantua-bake",      # Offline LUT/noise/starmap baking
+#       "crates/gargantua-render",    # Render pipelines, post-fx, HDR output
+#       "crates/gargantua-camera",    # Camera modes, spline paths, coord sys
+#       "crates/gargantua-video",     # Real-time capture + offline video export
+#       "crates/gargantua-ui",        # egui HUD, menus, widgets, i18n
+#       "crates/gargantua-app",       # App entry point, state, plugins, WASM
+#     ]
+#
+#   [workspace.dependencies]
+#     wgpu                — GPU abstraction layer (WebGPU / Metal / DX12 / Vulkan)
+#     winit               — cross-platform window creation and event loop
+#     egui                — immediate-mode GUI framework
+#     egui-wgpu           — egui render backend for wgpu
+#     wasm-bindgen        — Rust <-> JavaScript bridge for WASM builds
+#     web-sys             — browser API bindings (canvas, window, console)
+#     tracing             — structured logging and async span tracing
+#     tracing-subscriber  — tracing output formatting (native + WASM targets)
+#     thiserror           — #[derive(Error)] for ergonomic error types
+#     anyhow              — error propagation with the ? operator
+#     serde               — serialize/deserialize derive macros
+#     serde_json          — JSON support (URL state sharing, configs)
+#     toml                — TOML parsing (preset files: m87.toml, etc.)
+#     bytemuck            — Pod/Zeroable derive for safe GPU buffer casting
+#     rayon               — data-parallel iterators (bake pipeline)
+#     rhai                — embedded scripting engine (user plugin system)
+#     notify              — filesystem watcher (WGSL hot-reload in dev)
+#     half                — f16 type support (HDR textures, EXR images)
+#     image               — image I/O (EXR, PNG, HDR)
+#     glam                — SIMD math library (Vec2/3/4, Mat4, Quat)
+#     criterion           — statistical benchmark harness (benches/ crates)
+#
+#   [profile.dev]
+#     opt-level = 1             # minimal optimization — faster dev iteration
+#
+#   [profile.release]
+#     opt-level = 3
+#     lto = "thin"              # link-time optimization
+#     codegen-units = 1         # single codegen unit for max optimization
+#     strip = true              # strip debug symbols from binary
+#
+#   [profile.release-wasm]      # dedicated profile for wasm-pack builds
+#     inherits = "release"
+#     opt-level = "z"           # minimize binary size for browser delivery
+#
+# INTERNAL DEPENDENCIES:
+#   Every crate under crates/ references this file via:
+#     [dependencies]
+#     wgpu = { workspace = true }
+#   Version changes only need to be made here.
+#
+# EXTERNAL DEPENDENCIES: none (this is the root manifest)
+#
+# NOTES FOR AI:
+#   - wasm-bindgen version must match the wasm-pack CLI version used in CI
+#   - wgpu version is tightly coupled to the naga shader validator version
+#   - glam must have the "bytemuck" feature enabled for GPU buffer usage
+#   - rhai is used exclusively by crates/gargantua-app/src/plugin/scripting.rs
+#   - notify is used only in dev builds via crates/gargantua-render/src/shader_reload.rs
+# =============================================================================
+
+[workspace]
+resolver = "2"
+members = [
+    "crates/gargantua-core",
+    "crates/gargantua-physics",
+    "crates/gargantua-bake",
+    "crates/gargantua-render",
+    "crates/gargantua-camera",
+    "crates/gargantua-video",
+    "crates/gargantua-ui",
+    "crates/gargantua-app",
+]
+
+[workspace.dependencies]
+wgpu               = "X.X"
+winit              = "X.X"
+egui               = "X.X"
+egui-wgpu          = "X.X"
+wasm-bindgen       = "X.X"
+web-sys            = "X.X"
+tracing            = "X.X"
+tracing-subscriber = "X.X"
+thiserror          = "X.X"
+anyhow             = "X.X"
+serde              = { version = "X.X", features = ["derive"] }
+serde_json         = "X.X"
+toml               = "X.X"
+bytemuck           = { version = "X.X", features = ["derive"] }
+rayon              = "X.X"
+rhai               = "X.X"
+notify             = "X.X"
+half               = "X.X"
+image              = "X.X"
+glam               = { version = "X.X", features = ["bytemuck"] }
+criterion          = { version = "X.X", features = ["html_reports"] }
+
+[profile.dev]
+opt-level = 1
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = true
+
+[profile.release-wasm]
+inherits = "release"
+opt-level = "z"

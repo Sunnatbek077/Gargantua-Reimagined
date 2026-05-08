@@ -1,0 +1,158 @@
+# =============================================================================
+# .github/workflows/ci.yml — CONTINUOUS INTEGRATION PIPELINE
+# =============================================================================
+#
+# PURPOSE:
+#   Runs on every pull request and every push to main.
+#   Validates that the codebase compiles, passes all tests, meets
+#   formatting and lint standards, and builds successfully for WASM.
+#   Runs on 3 operating systems: ubuntu-latest, macos-latest, windows-latest.
+#
+# SIZE: ~120 lines
+#
+# TRIGGER EVENTS:
+#   on:
+#     push:
+#       branches: [main]
+#     pull_request:
+#       branches: [main]
+#
+# JOBS:
+#
+#   job: test
+#     runs-on: [ubuntu-latest, macos-latest, windows-latest]  (matrix)
+#     steps:
+#       1. actions/checkout@v4
+#          — checks out the repository
+#
+#       2. Install Rust toolchain
+#          — uses dtolnay/rust-toolchain@stable
+#          — components: rustfmt, clippy
+#          — targets: wasm32-unknown-unknown (for WASM build step)
+#
+#       3. Cache cargo registry and build artifacts
+#          — uses actions/cache@v4
+#          — key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+#          — paths: ~/.cargo/registry, ~/.cargo/git, target/
+#
+#       4. cargo fmt --check
+#          — fails if any file is not formatted per rustfmt.toml
+#          — runs on ubuntu-latest only (formatting is OS-independent)
+#
+#       5. cargo clippy -- -D warnings
+#          — fails if any clippy lint warning is emitted
+#          — runs on all 3 OS targets
+#          — uses rules from clippy.toml
+#
+#       6. cargo deny check
+#          — fails if any security advisory, banned crate, or license
+#            violation is found (uses deny.toml)
+#          — runs on ubuntu-latest only
+#
+#       7. cargo test --workspace
+#          — runs all unit tests and integration tests across all crates
+#          — runs on all 3 OS targets
+#          — test files covered:
+#              crates/gargantua-core/tests/frame_graph.rs
+#              crates/gargantua-physics/tests/kerr_metric.rs
+#              crates/gargantua-physics/tests/schwarzschild.rs
+#              crates/gargantua-physics/tests/geodesic.rs
+#              crates/gargantua-physics/tests/isco.rs
+#              crates/gargantua-physics/tests/doppler.rs
+#              crates/gargantua-bake/tests/cache.rs
+#              crates/gargantua-bake/tests/lut_baker.rs
+#              crates/gargantua-render/tests/pipeline.rs
+#              crates/gargantua-camera/tests/spline.rs
+#              crates/gargantua-camera/tests/coord_system.rs
+#              crates/gargantua-video/tests/codec_support.rs
+#              crates/gargantua-video/tests/color_transform.rs
+#              crates/gargantua-ui/tests/search.rs
+#              crates/gargantua-ui/tests/preset.rs
+#              crates/gargantua-app/tests/url_serde.rs
+#              crates/gargantua-app/tests/undo_redo.rs
+#              tests/render_pipeline.rs
+#              tests/bake_cache.rs
+#
+#       8. Install wasm-pack
+#          — curl https://rustwasm.github.io/wasm-pack/installer/init.sh | sh
+#          — runs on ubuntu-latest only
+#
+#       9. wasm-pack build crates/gargantua-app --target web
+#          — compiles the entire workspace to WASM
+#          — verifies that no crate accidentally uses OS-only APIs
+#          — output goes to crates/gargantua-app/pkg/
+#          — runs on ubuntu-latest only
+#
+# ENVIRONMENT VARIABLES:
+#   CARGO_TERM_COLOR: always     — colored terminal output in CI logs
+#   RUST_BACKTRACE: 1            — full backtraces on test failures
+#
+# NOTES FOR AI:
+#   - The matrix strategy runs steps 5 and 7 on all 3 OS targets
+#     to catch platform-specific compilation errors early.
+#   - Steps 4, 6, 8, 9 run only on ubuntu-latest to avoid redundancy.
+#   - The wasm-pack step catches cfg(target_arch = "wasm32") issues
+#     and ensures web-sys / wasm-bindgen bindings compile correctly.
+#   - Cargo.lock is committed to the repository so CI uses pinned versions.
+# =============================================================================
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+          targets: wasm32-unknown-unknown
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Check formatting
+        if: matrix.os == 'ubuntu-latest'
+        run: cargo fmt --check
+
+      - name: Clippy
+        run: cargo clippy -- -D warnings
+
+      - name: Security audit
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cargo install cargo-deny --locked
+          cargo deny check
+
+      - name: Tests
+        run: cargo test --workspace
+
+      - name: Install wasm-pack
+        if: matrix.os == 'ubuntu-latest'
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: WASM build
+        if: matrix.os == 'ubuntu-latest'
+        run: wasm-pack build crates/gargantua-app --target web

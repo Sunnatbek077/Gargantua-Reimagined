@@ -1,0 +1,85 @@
+# =============================================================================
+# rustfmt.toml — CODE FORMATTING STANDARD
+# =============================================================================
+#
+# PURPOSE:
+#   Enforces a consistent code style across the entire workspace.
+#   Applied automatically by `cargo fmt`.
+#   In CI (ci.yml), `cargo fmt --check` runs on every PR —
+#   any formatting violation causes the pipeline to fail.
+#
+# SIZE: ~30 lines
+#
+# KEY SETTINGS:
+#   edition = "2021"
+#     — Rust edition; enables let-else, or-patterns, etc.
+#
+#   max_width = 100
+#     — Line width limit. 100 instead of the default 80 because
+#       deeply nested GPU and physics code frequently exceeds 80 chars.
+#
+#   tab_spaces = 4
+#     — Standard Rust indentation (spaces, not tabs).
+#
+#   newline_style = "Unix"
+#     — LF line endings on all platforms (avoids CRLF noise in diffs).
+#
+#   imports_granularity = "Crate"
+#     — Merges all `use` statements from the same crate into one block.
+#       Example: `use wgpu::{Device, Queue, Buffer}` instead of three lines.
+#
+#   group_imports = "StdExternalCrate"
+#     — Sorts imports into three groups separated by blank lines:
+#         1. std / core / alloc
+#         2. external crates (wgpu, egui, glam, ...)
+#         3. internal crates (gargantua-*)
+#
+#   reorder_imports = true
+#     — Alphabetically sorts items within each import group.
+#
+#   reorder_modules = true
+#     — Alphabetically sorts `mod` declarations.
+#
+#   use_field_init_shorthand = true
+#     — Prefers `Foo { x }` over `Foo { x: x }`.
+#
+#   use_try_shorthand = true
+#     — Prefers `?` over `try!()`.
+#
+#   format_doc_comments = true
+#     — Reformats /// doc comments to fit within max_width.
+#
+#   wrap_comments = true
+#     — Wraps long // comments at max_width.
+#
+#   match_block_trailing_comma = true
+#     — Adds trailing comma after the last match arm block.
+#
+#   trailing_comma = "Vertical"
+#     — Trailing comma on the last item when list is formatted vertically.
+#
+# USED BY:
+#   - .github/workflows/ci.yml  (cargo fmt --check on every PR)
+#   - Developer local: `cargo fmt` before committing
+#
+# NOTES FOR AI:
+#   - Do not set max_width below 100; physics and shader binding code
+#     commonly has long type signatures that need the extra width.
+#   - imports_granularity = "Crate" is intentional — avoids import explosion
+#     in files that use many wgpu or egui types simultaneously.
+# =============================================================================
+
+edition = "2021"
+max_width = 100
+tab_spaces = 4
+newline_style = "Unix"
+imports_granularity = "Crate"
+group_imports = "StdExternalCrate"
+reorder_imports = true
+reorder_modules = true
+use_field_init_shorthand = true
+use_try_shorthand = true
+format_doc_comments = true
+wrap_comments = true
+match_block_trailing_comma = true
+trailing_comma = "Vertical"

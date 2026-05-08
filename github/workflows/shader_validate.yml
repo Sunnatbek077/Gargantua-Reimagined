@@ -1,0 +1,147 @@
+# =============================================================================
+# .github/workflows/shader_validate.yml — SHADER VALIDATION PIPELINE
+# =============================================================================
+#
+# PURPOSE:
+#   Validates every WGSL shader file in the shaders/ directory using two
+#   independent validators:
+#     1. naga CLI  — parses and validates WGSL, converts to SPIR-V/MSL/HLSL
+#     2. xcrun metal (macOS runner) — compiles the MSL output from naga
+#        through the actual Metal compiler to catch Metal-specific errors
+#
+#   Runs on every PR that touches any file under shaders/ or
+#   crates/gargantua-bake/src/*/bake.wgsl.
+#   A shader syntax error or Metal compile failure blocks the PR.
+#
+# SIZE: ~60 lines
+#
+# TRIGGER EVENTS:
+#   on:
+#     pull_request:
+#       paths:
+#         - 'shaders/**'
+#         - 'crates/gargantua-bake/src/**/bake.wgsl'
+#     push:
+#       branches: [main]
+#       paths:
+#         - 'shaders/**'
+#         - 'crates/gargantua-bake/src/**/bake.wgsl'
+#
+# SHADER FILES VALIDATED (~13 files):
+#   shaders/compute/ray_march.wgsl        — main photon ray marcher (680 lines)
+#   shaders/compute/geodesic_rk4.wgsl     — GPU-side RK4 integrator (520 lines)
+#   shaders/compute/accumulate.wgsl       — offline render accumulation (180 lines)
+#   shaders/render/fullscreen.wgsl        — fullscreen triangle vertex shader (60 lines)
+#   shaders/render/accretion_disk.wgsl    — accretion disk emission (440 lines)
+#   shaders/render/lensing.wgsl           — gravitational lensing (380 lines)
+#   shaders/render/starfield.wgsl         — EXR cubemap star field (200 lines)
+#   shaders/postfx/taa.wgsl               — temporal anti-aliasing (320 lines)
+#   shaders/postfx/bloom_down.wgsl        — Kawase downsample (140 lines)
+#   shaders/postfx/bloom_up.wgsl          — Kawase upsample (140 lines)
+#   shaders/postfx/chromatic.wgsl         — chromatic aberration (120 lines)
+#   shaders/postfx/film_grain.wgsl        — blue noise film grain (140 lines)
+#   shaders/postfx/motion_blur.wgsl       — tile-based motion blur (280 lines)
+#   shaders/postfx/tonemap.wgsl           — ACES RRT tonemapper (260 lines)
+#   crates/gargantua-bake/src/noise/bake.wgsl     — blue noise GPU bake (180 lines)
+#   crates/gargantua-bake/src/geodesic/bake.wgsl  — geodesic LUT bake (220 lines)
+#
+# JOBS:
+#
+#   job: naga-validate
+#     runs-on: ubuntu-latest
+#     steps:
+#       1. actions/checkout@v4
+#       2. Install Rust toolchain (stable)
+#       3. Install naga-cli
+#          — cargo install naga-cli
+#          — naga is the shader compiler used by wgpu internally
+#       4. Validate all WGSL files
+#          — find shaders/ crates/ -name "*.wgsl" | xargs -I{} naga {}
+#          — naga parses WGSL and reports syntax/type errors
+#          — also attempts conversion to SPIR-V to catch semantic errors
+#
+#   job: metal-compile
+#     runs-on: macos-latest        # xcrun / Metal SDK only available on macOS
+#     needs: naga-validate         # only run if WGSL validation passes
+#     steps:
+#       1. actions/checkout@v4
+#       2. Install Rust toolchain (stable)
+#       3. Install naga-cli
+#       4. Convert WGSL to MSL using naga
+#          — for each shader: naga <file.wgsl> <file.msl> --target msl
+#          — naga outputs Metal Shading Language source
+#       5. Compile MSL with xcrun
+#          — xcrun -sdk macosx metal -std=metal3.0 -c <file.msl> -o <file.air>
+#          — uses the actual Xcode Metal compiler
+#          — catches Metal-specific type errors, unsupported features, etc.
+#          — -std=metal3.0 requires Xcode 15+ (macOS 14 runner)
+#
+# NOTES FOR AI:
+#   - naga-cli version must match the naga version used by wgpu in Cargo.toml.
+#     If they diverge, validation may pass but runtime compilation may fail.
+#   - The metal-compile job catches errors that naga's WGSL→MSL translation
+#     might not detect, such as resource binding conflicts on Metal.
+#   - WGSL compute shaders use @workgroup_size(8, 8, 1) — this is validated
+#     by naga but the Metal compiler also checks against device limits.
+#   - shader_validate.yml runs independently of ci.yml; both must pass for
+#     a PR to be mergeable (configured as required status checks in GitHub).
+# =============================================================================
+
+name: Shader Validate
+
+on:
+  pull_request:
+    paths:
+      - 'shaders/**'
+      - 'crates/gargantua-bake/src/**/bake.wgsl'
+  push:
+    branches: [main]
+    paths:
+      - 'shaders/**'
+      - 'crates/gargantua-bake/src/**/bake.wgsl'
+
+jobs:
+  naga-validate:
+    name: WGSL Validation (naga)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/naga
+          key: naga-cli-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install naga-cli
+        run: cargo install naga-cli --locked
+
+      - name: Validate all WGSL shaders
+        run: |
+          find shaders/ crates/ -name "*.wgsl" | while read f; do
+            echo "Validating $f"
+            naga "$f"
+          done
+
+  metal-compile:
+    name: MSL Compile (xcrun Metal)
+    runs-on: macos-latest
+    needs: naga-validate
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install naga-cli
+        run: cargo install naga-cli --locked
+
+      - name: Convert WGSL to MSL and compile
+        run: |
+          find shaders/ crates/ -name "*.wgsl" | while read f; do
+            base="${f%.wgsl}"
+            echo "Converting $f to MSL"
+            naga "$f" "${base}.msl" --target msl
+            echo "Compiling ${base}.msl with Metal"
+            xcrun -sdk macosx metal -std=metal3.0 -c "${base}.msl" -o "${base}.air"
+          done
