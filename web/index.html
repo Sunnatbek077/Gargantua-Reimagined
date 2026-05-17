@@ -1,0 +1,105 @@
+<!-- ============================================================
+FILE: web/index.html
+LINES: ~120
+CATEGORY: Web — WASM build entry point (browser version)
+PLATFORM: Browser (Chrome/Firefox/Safari via WebAssembly)
+============================================================
+
+PURPOSE:
+  HTML entry point for the WebAssembly (WASM) build of Gargantua.
+  Loads the compiled .wasm binary and .js glue code produced by
+  wasm-pack or cargo build --target wasm32-unknown-unknown.
+  Sets up the HTML5 Canvas element that wgpu renders into via
+  WebGPU (navigator.gpu) or WebGL2 fallback.
+
+CONTENTS (~120 lines):
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gargantua — Black Hole Renderer</title>
+    <link rel="icon" href="assets/favicon.ico">
+    <style>
+      /* Full-viewport canvas with no scrollbars */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: #000; overflow: hidden; }
+      #canvas {
+          width: 100vw; height: 100vh;
+          display: block;
+          cursor: crosshair;
+      }
+      #loading {
+          position: fixed; top: 50%; left: 50%;
+          transform: translate(-50%, -50%);
+          color: #4D9DE0; font-family: monospace; font-size: 16px;
+          /* Shown during WASM load, hidden once canvas ready */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading">Loading Gargantua...</div>
+    <canvas id="canvas"></canvas>
+
+    <script type="module">
+      // Load the wasm-pack generated JS glue
+      import init, { run_app } from './pkg/gargantua.js';
+
+      async function main() {
+          // Check WebGPU support
+          if (!navigator.gpu) {
+              document.getElementById('loading').textContent =
+                  'WebGPU not supported. Please use Chrome 113+ or enable flags.';
+              return;
+          }
+
+          // Initialize WASM module
+          await init('./pkg/gargantua_bg.wasm');
+
+          // Hide loading indicator
+          document.getElementById('loading').style.display = 'none';
+
+          // Hand control to the Rust/wgpu event loop
+          // run_app() is exported from gargantua-app/src/lib.rs (wasm entry)
+          // It takes the canvas element id and starts the render loop
+          run_app('canvas');
+      }
+
+      main().catch(err => {
+          document.getElementById('loading').textContent = 'Error: ' + err;
+          console.error(err);
+      });
+    </script>
+  </body>
+  </html>
+
+USES:
+  ./pkg/gargantua.js       — wasm-pack generated JS bindings
+  ./pkg/gargantua_bg.wasm  — compiled Rust/WASM binary
+  assets/favicon.ico       — app icon
+  Calls: run_app() exported from crates/gargantua-app/src/lib.rs
+    → #[cfg(target_arch = "wasm32")]
+      #[wasm_bindgen]
+      pub fn run_app(canvas_id: &str)
+
+BUILD COMMAND:
+  wasm-pack build --target web --out-dir web/pkg crates/gargantua-app
+  Then open web/index.html via a local HTTP server (not file://)
+  Example: python3 -m http.server 8080 --directory web/
+
+USED BY:
+  Deployed to: https://sunnatbek077.github.io/Gargantua/
+  Local dev: http://localhost:8080/index.html
+
+NOTE FOR AI:
+  WebGPU (navigator.gpu): requires Chrome 113+ or Firefox Nightly.
+  Fallback to WebGL2 is NOT automatic — wgpu chooses backend at compile time.
+  For WebGL2 fallback: rebuild with --features webgl (if supported).
+  Canvas must be set to actual pixel dimensions (not CSS size) for HiDPI:
+    canvas.width  = window.innerWidth  * window.devicePixelRatio;
+    canvas.height = window.innerHeight * window.devicePixelRatio;
+  This is handled inside run_app() on the Rust side via web-sys.
+  Assets (baked LUTs, starmap) must be served alongside the WASM
+  from the same origin or a CORS-enabled server.
+  WASM binary size: expect ~5–10MB (gzip: ~2–3MB) for the full build.
+============================================================ -->
