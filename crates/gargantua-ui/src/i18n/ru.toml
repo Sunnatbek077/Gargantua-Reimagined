@@ -1,0 +1,148 @@
+# ============================================================
+# FILE: crates/gargantua-ui/src/i18n/ru.toml
+# LINES: ~120
+# CATEGORY: i18n — Russian translation strings
+# PLATFORM: cross-platform (Mac + Windows + WASM)
+# ============================================================
+#
+# PURPOSE:
+#   Russian (Русский) translations for all UI strings.
+#   Must contain every key defined in en.toml.
+#   If a key is missing here, I18n::t() returns the key string
+#   itself as a fallback (never panics).
+#
+# ENCODING: UTF-8 (required for Cyrillic characters)
+#
+# LOADED BY:
+#   crates/gargantua-ui/src/i18n/mod.rs
+#     → I18n::new(Language::Ru) loads this file via include_str!()
+#
+# TRANSLATION NOTES:
+#   - Physics units (M☉, G, K, nits) are kept as-is (not translated)
+#   - UI keyboard shortcuts remain in Latin (H, F1, F2...)
+#   - Section headings use Title Case in Russian
+#   - Tooltips should be concise (max ~80 chars per line)
+#
+# ============================================================
+
+# ── MENU GENERAL ─────────────────────────────────────────────
+[menu]
+search_placeholder = "Поиск настроек..."
+tab_physics    = "Физика"
+tab_accretion  = "Аккреция"
+tab_camera     = "Камера"
+tab_postfx     = "Постэффекты"
+tab_bake       = "Запечь"
+tab_render     = "Рендер"
+tab_export     = "Экспорт"
+
+# ── PHYSICS TAB ──────────────────────────────────────────────
+[physics]
+section_bh_params    = "Параметры Чёрной Дыры"
+mass_label           = "Масса"
+mass_unit            = "M☉"
+mass_tooltip         = "Масса чёрной дыры в солнечных массах. M87*: 6.5×10⁹ M☉, SgrA*: 4.1×10⁶ M☉"
+spin_label           = "Спин"
+spin_tooltip         = "Безразмерный параметр спина a = J/M. Диапазон: -0.998 (ретроградный) до +0.998 (програждный)"
+charge_label         = "Заряд"
+charge_tooltip       = "Электрический заряд Q (Керр-Ньюман). Астрофизические ЧД: Q ≈ 0"
+section_derived      = "Производные Величины"
+isco_label           = "Радиус ISCO"
+isco_unit            = "M"
+horizon_label        = "Горизонт событий"
+photon_sphere_label  = "Фотонная сфера"
+binding_energy_label = "Энергия связи"
+section_effects      = "Релятивистские Эффекты у Камеры"
+redshift_label       = "Гравитационное красное смещение z"
+time_dilation_label  = "Замедление времени τ/t"
+frame_drag_label     = "Увлечение систем отсчёта Ω_FD"
+
+# ── ACCRETION TAB ─────────────────────────────────────────────
+[accretion]
+section_disk         = "Модель Диска"
+accretion_rate_label = "Темп аккреции"
+accretion_rate_unit  = "Эддингтон"
+r_outer_label        = "Внешний радиус"
+r_outer_unit         = "M"
+show_disk_label      = "Показать диск"
+section_mhd          = "МГД и Магнитное Поле"
+beta_label           = "Плазменное β"
+beta_tooltip         = "Отношение газового давления к магнитному. Меньшее β → сильнее МГД-турбулентность"
+b_field_label        = "Поле B"
+b_field_unit         = "Гс"
+jet_label            = "Включить джет"
+section_properties   = "Свойства Диска"
+peak_temp_label      = "Пиковая температура"
+peak_temp_unit       = "К"
+luminosity_label     = "Светимость"
+jet_power_label      = "Мощность джета"
+
+# ── CAMERA TAB ───────────────────────────────────────────────
+[camera]
+section_mode         = "Режим Камеры"
+mode_orbit           = "Орбита"
+mode_free            = "Свободный полёт"
+mode_gravity         = "Гравитация"
+fov_label            = "Поле зрения"
+fov_unit             = "°"
+speed_label          = "Скорость"
+beta_label           = "Скорость β"
+beta_tooltip         = "Скорость камеры как доля от c. Включает релятивистскую аберрацию."
+aberration_label     = "Релятивистская аберрация"
+time_warp_label      = "Гравитационное замедление времени"
+section_position     = "Положение Камеры"
+reset_button         = "Сбросить камеру"
+
+# ── POST FX TAB ───────────────────────────────────────────────
+[postfx]
+section_bloom        = "Блюм"
+bloom_enabled_label  = "Включить блюм"
+bloom_threshold      = "Порог"
+bloom_radius         = "Радиус"
+bloom_intensity      = "Интенсивность"
+section_tonemap      = "Тональная Компрессия"
+tonemap_aces         = "ACES"
+tonemap_reinhard     = "Рейнхард"
+tonemap_filmic       = "Плёночный"
+tonemap_none         = "Нет (линейный)"
+exposure_label       = "Экспозиция"
+contrast_label       = "Контраст"
+section_lens         = "Эффекты Линзы"
+chromatic_label      = "Хроматическая аберрация"
+vignette_label       = "Виньетка"
+grain_label          = "Зернистость"
+section_hdr          = "HDR (только Mac)"
+hdr_enabled_label    = "Включить HDR"
+max_nits_label       = "Пиковая яркость"
+max_nits_unit        = "нит"
+
+# ── BAKE TAB ─────────────────────────────────────────────────
+[bake]
+section_geodesic     = "Геодезическая LUT"
+spin_steps_label     = "Шаги спина"
+impact_steps_label   = "Шаги прицельного параметра"
+rk4_steps_label      = "Шаги RK4"
+section_spectrum     = "Спектральные LUT"
+blackbody_size_label = "Размер LUT чёрного тела"
+doppler_beta_label   = "Шаги β Доплера"
+doppler_lambda_label = "Шаги λ Доплера"
+section_output       = "Вывод"
+browse_button        = "Обзор..."
+bake_button          = "Запечь все LUT"
+baking_label         = "Запекание..."
+cancel_button        = "Отмена"
+last_bake_label      = "Последнее запекание"
+
+# ── OVERLAY ───────────────────────────────────────────────────
+[overlay]
+in_ergosphere        = "⚠ В ЭРГОСФЕРЕ"
+baking_title         = "Запекание LUT..."
+rendering_title      = "Рендеринг..."
+elapsed_label        = "Прошло"
+eta_label            = "Осталось"
+
+# ── ERRORS ───────────────────────────────────────────────────
+[errors]
+no_gpu               = "GPU адаптер не найден. Проверьте драйверы видеокарты."
+luts_missing         = "Запечённые ресурсы не найдены. Сначала используйте вкладку «Запечь»."
+preset_not_found     = "Пресет не найден: {name}"

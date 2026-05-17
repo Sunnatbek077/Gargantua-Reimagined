@@ -1,0 +1,147 @@
+# ============================================================
+# FILE: crates/gargantua-ui/src/i18n/en.toml
+# LINES: ~120
+# CATEGORY: i18n — English translation strings (canonical source)
+# PLATFORM: cross-platform (Mac + Windows + WASM)
+# ============================================================
+#
+# PURPOSE:
+#   English UI strings for all labels, buttons, tooltips, and
+#   section headings in the Gargantua UI. This is the CANONICAL
+#   source — all other language files (ru.toml, uz.toml) must
+#   contain every key defined here. New UI text must be added
+#   to ALL THREE .toml files simultaneously.
+#
+# KEY NAMING CONVENTION:
+#   "module.widget_name"  e.g. "physics.spin_label"
+#   Modules: physics, accretion, camera, postfx, bake, render,
+#            export, menu, overlay, hud, preset, search, errors
+#
+# LOADED BY:
+#   crates/gargantua-ui/src/i18n/mod.rs
+#     → I18n::new(Language::En) loads this file via include_str!()
+#     → I18n::t("key") returns the value for the given key
+#
+# ============================================================
+
+# ── MENU GENERAL ─────────────────────────────────────────────
+[menu]
+search_placeholder = "Search controls..."
+tab_physics    = "Physics"
+tab_accretion  = "Accretion"
+tab_camera     = "Camera"
+tab_postfx     = "Post FX"
+tab_bake       = "Bake"
+tab_render     = "Render"
+tab_export     = "Export"
+
+# ── PHYSICS TAB ──────────────────────────────────────────────
+[physics]
+section_bh_params    = "Black Hole Parameters"
+mass_label           = "Mass"
+mass_unit            = "M☉"
+mass_tooltip         = "Black hole mass in solar masses. M87*: 6.5×10⁹ M☉, SgrA*: 4.1×10⁶ M☉"
+spin_label           = "Spin"
+spin_tooltip         = "Dimensionless spin parameter a = J/M. Range: -0.998 (retrograde) to +0.998 (prograde)"
+charge_label         = "Charge"
+charge_tooltip       = "Electric charge Q (Kerr-Newman). Astrophysical BHs: Q ≈ 0"
+section_derived      = "Derived Properties"
+isco_label           = "ISCO radius"
+isco_unit            = "M"
+horizon_label        = "Event horizon"
+photon_sphere_label  = "Photon sphere"
+binding_energy_label = "Binding energy"
+section_effects      = "Relativistic Effects at Camera"
+redshift_label       = "Gravitational redshift z"
+time_dilation_label  = "Time dilation τ/t"
+frame_drag_label     = "Frame dragging Ω_FD"
+
+# ── ACCRETION TAB ─────────────────────────────────────────────
+[accretion]
+section_disk         = "Disk Model"
+accretion_rate_label = "Accretion rate"
+accretion_rate_unit  = "Eddington"
+r_outer_label        = "Outer radius"
+r_outer_unit         = "M"
+show_disk_label      = "Show disk"
+section_mhd          = "MHD & Magnetic Field"
+beta_label           = "Plasma β"
+beta_tooltip         = "Ratio of gas pressure to magnetic pressure. Lower β → stronger MHD turbulence"
+b_field_label        = "B field"
+b_field_unit         = "G"
+jet_label            = "Enable jet"
+section_properties   = "Disk Properties"
+peak_temp_label      = "Peak temperature"
+peak_temp_unit       = "K"
+luminosity_label     = "Luminosity"
+jet_power_label      = "Jet power"
+
+# ── CAMERA TAB ───────────────────────────────────────────────
+[camera]
+section_mode         = "Camera Mode"
+mode_orbit           = "Orbit"
+mode_free            = "Free Flight"
+mode_gravity         = "Gravity"
+fov_label            = "Field of view"
+fov_unit             = "°"
+speed_label          = "Speed"
+beta_label           = "Velocity β"
+beta_tooltip         = "Camera speed as fraction of c. Enables relativistic aberration."
+aberration_label     = "Relativistic aberration"
+time_warp_label      = "Gravitational time warp"
+section_position     = "Camera Position"
+reset_button         = "Reset Camera"
+
+# ── POST FX TAB ───────────────────────────────────────────────
+[postfx]
+section_bloom        = "Bloom"
+bloom_enabled_label  = "Enable bloom"
+bloom_threshold      = "Threshold"
+bloom_radius         = "Radius"
+bloom_intensity      = "Intensity"
+section_tonemap      = "Tonemapping"
+tonemap_aces         = "ACES"
+tonemap_reinhard     = "Reinhard"
+tonemap_filmic       = "Filmic"
+tonemap_none         = "None (linear)"
+exposure_label       = "Exposure"
+contrast_label       = "Contrast"
+section_lens         = "Lens Effects"
+chromatic_label      = "Chromatic aberration"
+vignette_label       = "Vignette"
+grain_label          = "Film grain"
+section_hdr          = "HDR (Mac only)"
+hdr_enabled_label    = "Enable HDR"
+max_nits_label       = "Peak brightness"
+max_nits_unit        = "nits"
+
+# ── BAKE TAB ─────────────────────────────────────────────────
+[bake]
+section_geodesic     = "Geodesic LUT"
+spin_steps_label     = "Spin steps"
+impact_steps_label   = "Impact steps"
+rk4_steps_label      = "RK4 steps"
+section_spectrum     = "Spectrum LUTs"
+blackbody_size_label = "Blackbody LUT size"
+doppler_beta_label   = "Doppler β steps"
+doppler_lambda_label = "Doppler λ steps"
+section_output       = "Output"
+browse_button        = "Browse..."
+bake_button          = "Bake All LUTs"
+baking_label         = "Baking..."
+cancel_button        = "Cancel"
+last_bake_label      = "Last bake"
+
+# ── OVERLAY ───────────────────────────────────────────────────
+[overlay]
+in_ergosphere        = "⚠ IN ERGOSPHERE"
+baking_title         = "Baking LUTs..."
+rendering_title      = "Rendering..."
+elapsed_label        = "Elapsed"
+eta_label            = "ETA"
+
+# ── ERRORS ───────────────────────────────────────────────────
+[errors]
+no_gpu               = "No GPU adapter found. Please check your graphics drivers."
+luts_missing         = "Baked assets not found. Run the Bake tab first."
+preset_not_found     = "Preset not found: {name}"

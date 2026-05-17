@@ -1,0 +1,147 @@
+# ============================================================
+# FILE: crates/gargantua-ui/src/i18n/uz.toml
+# LINES: ~120
+# CATEGORY: i18n — Uzbek translation strings (O'zbek tili)
+# PLATFORM: cross-platform (Mac + Windows + WASM)
+# ============================================================
+#
+# PURPOSE:
+#   O'zbek tili tarjimalari — barcha UI matnlari uchun.
+#   en.toml da mavjud har bir kalit bu yerda bo'lishi shart.
+#   Kalit topilmasa, I18n::t() kalit nomini o'zini qaytaradi
+#   (hech qachon panic qilmaydi).
+#
+# ENCODING: UTF-8 (O'zbek lotin alifbosi uchun zarur)
+#
+# LOADED BY:
+#   crates/gargantua-ui/src/i18n/mod.rs
+#     → I18n::new(Language::Uz) loads this file via include_str!()
+#
+# TARJIMA ESLATMALARI:
+#   - Fizika birliklari (M☉, G, K, nits) o'zgartirilmaydi
+#   - Klaviatura qisqartmalari lotin harflarda qoladi (H, F1...)
+#   - Bo'lim sarlavhalari Title Case da yoziladi
+#
+# ============================================================
+
+# ── MENU GENERAL ─────────────────────────────────────────────
+[menu]
+search_placeholder = "Sozlamalarni qidirish..."
+tab_physics    = "Fizika"
+tab_accretion  = "Akkresiya"
+tab_camera     = "Kamera"
+tab_postfx     = "Post-effektlar"
+tab_bake       = "Pishirish"
+tab_render     = "Render"
+tab_export     = "Eksport"
+
+# ── PHYSICS TAB ──────────────────────────────────────────────
+[physics]
+section_bh_params    = "Qora Tuynuk Parametrlari"
+mass_label           = "Massa"
+mass_unit            = "M☉"
+mass_tooltip         = "Qora tuynuk massasi quyosh massasida. M87*: 6.5×10⁹ M☉, SgrA*: 4.1×10⁶ M☉"
+spin_label           = "Spin"
+spin_tooltip         = "O'lchamsiz spin parametri a = J/M. Diapazon: -0.998 (retrograd) dan +0.998 (prograd) gacha"
+charge_label         = "Zaryad"
+charge_tooltip       = "Elektr zaryad Q (Kerr-Newman). Astrofizik QT larda: Q ≈ 0"
+section_derived      = "Hisoblangan Qiymatlar"
+isco_label           = "ISCO radiusi"
+isco_unit            = "M"
+horizon_label        = "Hodisalar ufqi"
+photon_sphere_label  = "Foton sferasi"
+binding_energy_label = "Bog'lanish energiyasi"
+section_effects      = "Kamera Yonidagi Relyativistik Effektlar"
+redshift_label       = "Gravitatsion qizil siljish z"
+time_dilation_label  = "Vaqt sekinlashuvi τ/t"
+frame_drag_label     = "Fazoni tortish Ω_FD"
+
+# ── ACCRETION TAB ─────────────────────────────────────────────
+[accretion]
+section_disk         = "Disk Modeli"
+accretion_rate_label = "Akkresiya tezligi"
+accretion_rate_unit  = "Eddington"
+r_outer_label        = "Tashqi radius"
+r_outer_unit         = "M"
+show_disk_label      = "Diskni ko'rsatish"
+section_mhd          = "MGD va Magnit Maydon"
+beta_label           = "Plazma β"
+beta_tooltip         = "Gaz bosimi va magnit bosim nisbati. Kichik β → kuchli MGD turbulentlik"
+b_field_label        = "B maydon"
+b_field_unit         = "Gs"
+jet_label            = "Jetni yoqish"
+section_properties   = "Disk Xossalari"
+peak_temp_label      = "Eng yuqori harorat"
+peak_temp_unit       = "K"
+luminosity_label     = "Yorqinlik"
+jet_power_label      = "Jet quvvati"
+
+# ── CAMERA TAB ───────────────────────────────────────────────
+[camera]
+section_mode         = "Kamera Rejimi"
+mode_orbit           = "Orbit"
+mode_free            = "Erkin uchish"
+mode_gravity         = "Gravitatsiya"
+fov_label            = "Ko'rish burchagi"
+fov_unit             = "°"
+speed_label          = "Tezlik"
+beta_label           = "Tezlik β"
+beta_tooltip         = "Kamera tezligi c ga nisbatan. Relyativistik aberratsiyani yoqadi."
+aberration_label     = "Relyativistik aberratsiya"
+time_warp_label      = "Gravitatsion vaqt sekinlashuvi"
+section_position     = "Kamera Holati"
+reset_button         = "Kamerani tiklash"
+
+# ── POST FX TAB ───────────────────────────────────────────────
+[postfx]
+section_bloom        = "Bloom"
+bloom_enabled_label  = "Bloomni yoqish"
+bloom_threshold      = "Chegara"
+bloom_radius         = "Radius"
+bloom_intensity      = "Intensivlik"
+section_tonemap      = "Tonali Siqish"
+tonemap_aces         = "ACES"
+tonemap_reinhard     = "Reinhard"
+tonemap_filmic       = "Filmli"
+tonemap_none         = "Yo'q (chiziqli)"
+exposure_label       = "Ekspozitsiya"
+contrast_label       = "Kontrast"
+section_lens         = "Linza Effektlari"
+chromatic_label      = "Xromatik aberratsiya"
+vignette_label       = "Vinyet"
+grain_label          = "Film donadorligi"
+section_hdr          = "HDR (faqat Mac)"
+hdr_enabled_label    = "HDR ni yoqish"
+max_nits_label       = "Eng yuqori yorqinlik"
+max_nits_unit        = "nit"
+
+# ── BAKE TAB ─────────────────────────────────────────────────
+[bake]
+section_geodesic     = "Geodezik LUT"
+spin_steps_label     = "Spin qadamlari"
+impact_steps_label   = "Nishon parametr qadamlari"
+rk4_steps_label      = "RK4 qadamlari"
+section_spectrum     = "Spektral LUT lar"
+blackbody_size_label = "Qora jism LUT hajmi"
+doppler_beta_label   = "Doppler β qadamlari"
+doppler_lambda_label = "Doppler λ qadamlari"
+section_output       = "Chiqish"
+browse_button        = "Ko'rib chiqish..."
+bake_button          = "Barcha LUT larni pishirish"
+baking_label         = "Pishirilmoqda..."
+cancel_button        = "Bekor qilish"
+last_bake_label      = "Oxirgi pishirish"
+
+# ── OVERLAY ───────────────────────────────────────────────────
+[overlay]
+in_ergosphere        = "⚠ ERGOSFERADA"
+baking_title         = "LUT lar pishirilmoqda..."
+rendering_title      = "Render qilinmoqda..."
+elapsed_label        = "O'tdi"
+eta_label            = "Qoldi"
+
+# ── ERRORS ───────────────────────────────────────────────────
+[errors]
+no_gpu               = "GPU adapteri topilmadi. Grafik drayverlarni tekshiring."
+luts_missing         = "Pishirilgan resurslar topilmadi. Avval «Pishirish» bo'limidan foydalaning."
+preset_not_found     = "Preset topilmadi: {name}"
