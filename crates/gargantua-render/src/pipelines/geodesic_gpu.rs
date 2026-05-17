@@ -32,9 +32,9 @@
 //     - bytemuck::{Pod, Zeroable}
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — registers GeodesicGpuPass before RayMarchPass in FrameGraph
-//   - crates/gargantua-bake/src/geodesic/lut_baker.rs
+//   - crates/gargantua-bake/src/geodesic/let_baker.rs
 //       — calls dispatch_bake() to populate the geodesic LUT
 //
 // PUBLIC TYPES:
@@ -99,7 +99,7 @@
 //     lut_width:    u32,                 // 512
 //     lut_height:   u32,                 // 512
 //   )
-//     — called by lut_baker.rs to fill the geodesic LUT.
+//     — called by let_baker.rs to fill the geodesic LUT.
 //     — dispatches workgroups to cover the LUT dimensions.
 //     — sets output to the LUT texture rather than the frame buffer.
 //

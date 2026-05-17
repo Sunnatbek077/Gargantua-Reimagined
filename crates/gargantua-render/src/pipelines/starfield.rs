@@ -30,7 +30,7 @@
 //     - bytemuck::{Pod, Zeroable}
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — first pass registered (before accretion and lensing)
 //
 // PUBLIC TYPES:

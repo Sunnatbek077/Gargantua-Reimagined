@@ -36,7 +36,7 @@
 //         // x_offset from HudAnimator::menu_x.value
 //
 //       pub fn is_point_in_menu(&self, pos: egui::Pos2, x_offset: f32) -> bool
-//         // Used by input_router to check if click is inside menu panel
+//         // Used by systems/input.rs to check if click is inside menu panel
 //   }
 //
 // USES (imports from):
@@ -45,7 +45,7 @@
 // USED BY:
 //   hud/mod.rs       → HudLayout owned by Hud, passed to panels
 //   hud/animation.rs → menu_panel_animated() uses menu_x spring value
-//   crates/gargantua-app/src/input/input_router.rs
+//   crates/gargantua-app/src/systems/input.rs
 //     → is_point_in_menu() to suppress camera drag when clicking menu
 //
 // NOTE FOR AI:

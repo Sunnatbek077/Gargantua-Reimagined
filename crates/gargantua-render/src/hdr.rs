@@ -32,10 +32,10 @@
 //     - bytemuck::bytes_of
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs::App::new()   — creates HdrOutput
+//   - crates/gargantua-core/src/app.rs::App::new()   — creates HdrOutput
 //   - crates/gargantua-render/src/postfx/tonemap.rs
 //       — calls HdrOutput::uniforms_buffer() to get the color space buffer
-//   - crates/gargantua-app/src/app.rs::App::render_frame()
+//   - crates/gargantua-core/src/app.rs::App::render_frame()
 //       — calls HdrOutput::poll() to detect HDR state changes
 //
 // PUBLIC TYPES:

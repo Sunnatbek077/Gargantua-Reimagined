@@ -23,7 +23,7 @@
 //     - bytemuck::{Pod, Zeroable}
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — registered first in the post-fx chain, after all render passes
 //
 // PUBLIC TYPES:

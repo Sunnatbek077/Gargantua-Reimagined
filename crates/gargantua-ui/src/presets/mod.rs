@@ -28,7 +28,7 @@
 //   crates/gargantua-ui/src/lib.rs          → pub mod presets
 //   crates/gargantua-ui/src/menu/tabs/export_tab.rs
 //     → preset list display, save/load buttons
-//   crates/gargantua-app/src/settings.rs
+//   crates/gargantua-app/src/state/sim_state.rs
 //     → UserPresetStore serialized to app data directory
 //
 // NOTE FOR AI:

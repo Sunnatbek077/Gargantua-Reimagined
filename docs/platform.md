@@ -234,7 +234,7 @@ Frame N-2: CPU maps and reads (buffer[(cursor+2)%3]) → encoder
 
 This triple-buffer pattern ensures the GPU is never waiting for the CPU and the CPU is never waiting for the GPU.
 
-Uniform buffer uploads use `D3D12_HEAP_TYPE_UPLOAD` write-combined memory (`platform/windows/memory/upload_heap.rs`). Write-combined memory is fast for sequential CPU writes (cache-line streaming) but must never be read back on the CPU.
+Uniform buffer uploads use `D3D12_HEAP_TYPE_UPLOAD` write-combined memory (`crates/gargantua-core/src/platform/windows/memory/upload_heap.rs`). Write-combined memory is fast for sequential CPU writes (cache-line streaming) but must never be read back on the CPU.
 
 ### HDR Display
 
@@ -341,7 +341,7 @@ This works in all browsers with no server-side support. The compressed, base64ur
 
 ## Common: Shader Hot-Reload (Development)
 
-`platform/common/shader_reload.rs` uses the `notify` crate to watch `shaders/` for `.wgsl` file changes:
+`crates/gargantua-render/src/shader_reload.rs` uses the `notify` crate to watch `shaders/` for `.wgsl` file changes:
 
 ```
 Mac:     FSEvents API
@@ -356,7 +356,7 @@ Hot-reload is compiled only in debug builds or when `feature = "hot-reload"` is 
 
 ## Common: Software Fallback
 
-`platform/common/fallback.rs` handles the case where no real GPU is available (CI runners, VMs, headless servers). It requests `force_fallback_adapter = true` from wgpu, selecting the software rasteriser (wgpu's own lavapipe/WARP/Metal reference device).
+`crates/gargantua-core/src/gpu/context.rs` handles the case where no real GPU is available (CI runners, VMs, headless servers) by requesting `force_fallback_adapter = true` from wgpu, selecting the software rasteriser (wgpu's lavapipe / WARP / Metal reference device).
 
 In fallback mode:
 - `QualityPreset::potato()` is forced regardless of user settings.

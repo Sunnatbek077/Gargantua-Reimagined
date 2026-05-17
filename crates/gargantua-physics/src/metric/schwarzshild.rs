@@ -1,5 +1,5 @@
 // ============================================================
-// FILE: crates/gargantua-physics/src/metric/schwarzschild.rs
+// FILE: crates/gargantua-physics/src/metric/schwarzshild.rs
 // LINES: ~260
 // CATEGORY: Physics — Schwarzschild metric (non-rotating BH)
 // PLATFORM: cross-platform (Mac + Windows + WASM)
@@ -46,14 +46,15 @@
 //   crate::errors   → PhysicsError::NegativeMass
 //
 // USED BY:
-//   tests/schwarzschild.rs
+//   crates/gargantua-physics/tests/schwarzschild.rs
 //     → g_tt(r_s)=0, r_ISCO=6M, r_ph=3M, r_horizon=2M
-//   tests/kerr_metric.rs
+//   crates/gargantua-physics/tests/kerr_metric.rs
 //     → cross-check: KerrNewman(spin=0).isco_radius() == 6M
-//   tests/geodesic.rs
+//   crates/gargantua-physics/tests/geodesic.rs
 //     → photon orbit at r=3M verified with Schwarzschild metric
 //
 // NOTE FOR AI:
+//   On-disk filename is schwarzshild.rs (typo retained); type is Schwarzschild.
 //   Schwarzschild = Kerr(a=0, Q=0). All ISCO/photon sphere values
 //   are fixed constants of M with no spin dependence:
 //     r_ISCO = 6M,  r_ph = 3M,  r_horizon = 2M

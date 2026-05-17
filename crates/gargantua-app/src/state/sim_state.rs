@@ -61,7 +61,7 @@
 //   - gargantua_physics::metric::kerr → KerrMetric
 //   - gargantua_core::quality         → QualityLevel
 //   - gargantua_camera::modes         → CameraMode enum
-//   - render/bindgroups/physics.rs    → PhysicsUniforms (GPU struct)
+//   - crates/gargantua-render/src/bindgroups/physics.rs    → PhysicsUniforms (GPU struct)
 //   - serde (external)                → Serialize, Deserialize
 //   - bytemuck (external)             → Pod for GPU upload
 //   - errors.rs                       → AppResult

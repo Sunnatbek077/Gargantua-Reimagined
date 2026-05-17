@@ -53,7 +53,7 @@
 //     → per-fragment orbital β uploaded to accretion_disk.wgsl
 //   shaders/render/accretion_disk.wgsl
 //     → samples doppler_lut.exr at runtime for per-fragment color shift
-//   tests/doppler.rs
+//   crates/gargantua-physics/tests/doppler.rs
 //     → D(β=0.5, cosθ=+1) ≈ 1.732,  D(β=0.5, cosθ=−1) ≈ 0.577
 //
 // NOTE FOR AI:

@@ -32,9 +32,9 @@
 //     - std::collections::HashMap
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs::App::new()
+//   - crates/gargantua-core/src/app.rs::App::new()
 //       — creates ShaderReloader::new() in debug builds
-//   - crates/gargantua-app/src/app.rs::App::render_frame()
+//   - crates/gargantua-core/src/app.rs::App::render_frame()
 //       — calls ShaderReloader::poll() each frame
 //
 // PUBLIC TYPES:

@@ -41,7 +41,7 @@
 //   No WGSL imports.
 //
 // USED BY:
-//   crates/gargantua-render/src/pipelines/postfx.rs
+//   crates/gargantua-render/src/postfx/chromatic.rs
 //     → applied after bloom, before tonemap
 //
 // NOTE FOR AI:

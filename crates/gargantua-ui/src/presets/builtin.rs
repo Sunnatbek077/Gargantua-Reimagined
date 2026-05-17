@@ -73,7 +73,7 @@
 // USED BY:
 //   crates/gargantua-ui/src/menu/tabs/export_tab.rs
 //     → displays builtin preset list as read-only reference section
-//   crates/gargantua-app/src/app.rs
+//   crates/gargantua-core/src/app.rs
 //     → loads a BuiltinPreset on startup if no user settings found
 //
 // NOTE FOR AI:

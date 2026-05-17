@@ -26,7 +26,7 @@
 // CALLED BY:
 //   - crates/gargantua-ui/src/panel::path_editor.rs
 //       — calls PathRecorder::start_recording() / stop_recording()
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — calls PathRecorder::tick() each frame when recording
 //
 // PUBLIC TYPES:

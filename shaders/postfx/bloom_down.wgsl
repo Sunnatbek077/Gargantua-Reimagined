@@ -48,7 +48,7 @@
 //   No WGSL imports.
 //
 // USED BY:
-//   crates/gargantua-render/src/pipelines/bloom.rs
+//   crates/gargantua-render/src/postfx/bloom.rs
 //     → first pass of bloom: downsample to half resolution
 //     → chained: full → 1/2 → 1/4 → 1/8 (3 downsample passes)
 //

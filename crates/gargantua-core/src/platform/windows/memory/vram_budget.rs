@@ -26,8 +26,8 @@
 //     - std::sync::Arc
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs::App::new()  — creates at startup
-//   - crates/gargantua-app/src/app.rs::App::render_frame()
+//   - crates/gargantua-core/src/app.rs::App::new()  — creates at startup
+//   - crates/gargantua-core/src/app.rs::App::render_frame()
 //       — calls poll() each frame to check budget
 //   - crates/gargantua-ui/src/overlay/stats_bar.rs
 //       — calls stats() to display VRAM usage

@@ -44,7 +44,7 @@
 //
 // USED BY:
 //   All bake sub-modules return BakeResult<T>
-//   crates/gargantua-app/src/systems/bake_runner.rs
+//   crates/gargantua-app/src/lib.rs
 //     → matches BakeError variants to show error messages in UI
 //
 // NOTE FOR AI:

@@ -177,7 +177,7 @@
 //     Use device.push_error_scope(wgpu::ErrorFilter::Validation) before
 //     and device.pop_error_scope().block_on() after to catch them explicitly.
 //   - The test for broken WGSL requires a test fixture file at:
-//       crates/gargantua-render/tests/fixtures/broken.wgsl
+//       PLANNED: crates/gargantua-render/tests/fixtures/broken.wgsl
 //     containing a syntax error (e.g., `fn main() { invalid_syntax!!! }`).
 //   - Shader loading in tests uses the real shaders/ directory (not embedded).
 //     This means tests must be run from the workspace root or with the correct

@@ -42,7 +42,7 @@
 //   No WGSL imports.
 //
 // USED BY:
-//   crates/gargantua-render/src/pipelines/postfx.rs
+//   crates/gargantua-render/src/postfx/motion_blur.rs
 //     → applied before bloom when camera velocity > threshold
 //
 // NOTE FOR AI:

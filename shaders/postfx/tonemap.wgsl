@@ -78,7 +78,7 @@
 //   No WGSL imports.
 //
 // USED BY:
-//   crates/gargantua-render/src/pipelines/postfx.rs
+//   crates/gargantua-render/src/postfx/tonemap.rs
 //     → final pass, renders to swapchain surface
 //
 // NOTE FOR AI:

@@ -1,5 +1,5 @@
 // =============================================================================
-// crates/gargantua-core/src/platform/windows/mod.rs
+// FILE: crates/gargantua-core/src/platform/mod.rs
 // =============================================================================
 //
 // PURPOSE:
@@ -47,7 +47,7 @@
 //
 // CALLED BY:
 //   - crate::gpu::context::GpuContext::new()  — initializes Windows platform
-//   - crates/gargantua-app/src/app.rs::App::new()
+//   - crates/gargantua-core/src/app.rs — App::new() on Windows builds
 //
 // PUBLIC TYPES:
 //
@@ -61,6 +61,10 @@
 //   }
 //
 // NOTES FOR AI:
+//   - This file is platform/mod.rs but currently contains the Windows HAL
+//     root (body matches platform/windows/*). macOS HAL lives under
+//     platform/macos/ and is wired separately. A future refactor may move
+//     this content to platform/windows/mod.rs and leave mod.rs as dispatch.
 //   - All sub-modules are gated with #[cfg(target_os = "windows")].
 //   - This mod.rs is also gated — the entire windows/ tree is excluded
 //     from macOS and WASM builds.

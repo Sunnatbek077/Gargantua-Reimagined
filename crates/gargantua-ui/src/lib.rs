@@ -35,8 +35,10 @@
 //   All sub-modules declared above
 //
 // USED BY:
-//   crates/gargantua-app/src/app.rs
-//     → use gargantua_ui::{Hud, I18n, Theme}
+//   crates/gargantua-core/src/app.rs
+//     → renders egui each frame on top of the scene
+//   crates/gargantua-app/src/lib.rs
+//     → composition root; wires UI to SimState via EventBus
 //
 // NOTE FOR AI:
 //   This file is declarations + re-exports only. No logic here.

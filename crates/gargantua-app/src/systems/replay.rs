@@ -56,8 +56,8 @@
 //
 // INBOUND:
 //   - gargantua_core::app::App   → calls tick_playback() / record_frame() each frame
-//   - video/offline/renderer.rs  → calls load_from_file() for SimState timeline
-//   - ui/menu/tabs/replay_tab.rs → start/stop recording, load file, scrub playhead
+//   - crates/gargantua-video/src/offline/renderer.rs  → calls load_from_file() for SimState timeline
+//   - crates/gargantua-ui/src/menu/tabs/camera_tab.rs → start/stop recording, load file, scrub playhead
 //
 // NOTES:
 //   - A 60-second replay at 60 FPS = 3600 SimState snapshots ≈ 2.2 MB

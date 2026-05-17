@@ -44,8 +44,8 @@
 //   - gargantua_physics::metric::kerr        → KerrMetric
 //   - gargantua_physics::accretion::isco     → compute_isco(), IscoBounds
 //   - gargantua_physics::accretion::mhd      → MhdDisk
-//   - render/bindgroups/physics.rs           → PhysicsUniforms (GPU struct layout)
-//   - platform/windows/memory/upload_heap.rs → UploadHeap (Windows only)
+//   - crates/gargantua-render/src/bindgroups/physics.rs           → PhysicsUniforms (GPU struct layout)
+//   - crates/gargantua-core/src/platform/windows/memory/upload_heap.rs → UploadHeap (Windows only)
 //   - gargantua_core::gpu::context           → GpuContext
 //   - wgpu (external)                        → Buffer, Queue
 //   - errors.rs                              → AppResult

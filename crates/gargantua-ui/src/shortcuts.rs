@@ -52,7 +52,7 @@
 // USED BY:
 //   crates/gargantua-ui/src/hud/mod.rs
 //     → ShortcutHandler::process(ctx) called at start of Hud::draw()
-//   crates/gargantua-app/src/app.rs
+//   crates/gargantua-core/src/app.rs
 //     → processes returned Vec<AppEvent>
 //
 // NOTE FOR AI:

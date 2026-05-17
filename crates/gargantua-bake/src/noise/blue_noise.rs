@@ -30,7 +30,7 @@
 //   pub fn validate_blue_noise(data: &[f32], size: usize) -> bool
 //     // Computes 2D DFT (or DCT approximation)
 //     // Returns true if low-freq energy < 10% of total energy
-//     // Used in tests/cache.rs to verify baked output quality
+//     // Used in crates/gargantua-bake/tests/cache.rs to verify baked output quality
 //
 // USES (imports from):
 //   crate::errors::{BakeResult, BakeError}
@@ -40,7 +40,7 @@
 //
 // USED BY:
 //   crate::scheduler::BakeScheduler::run()  → bake step 4
-//   tests/cache.rs → validate_blue_noise() for quality check
+//   crates/gargantua-bake/tests/cache.rs → validate_blue_noise() for quality check
 //
 // NOTE FOR AI:
 //   Blue noise size default: 256×256 = 65536 pixels.

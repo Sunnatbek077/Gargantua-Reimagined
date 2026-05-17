@@ -35,7 +35,7 @@
 //   - crate::gpu::surface::GpuSurface::new()  — Windows HDR branch
 //   - crates/gargantua-render/src/postfx/tonemap.rs
 //       — calls Hdr10Output::color_uniforms() for bind group data
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — calls Hdr10Output::update_metadata() when scene brightness changes
 //
 // PUBLIC TYPES:

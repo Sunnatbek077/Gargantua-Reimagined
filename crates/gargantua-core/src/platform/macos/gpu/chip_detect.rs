@@ -26,7 +26,7 @@
 //   - crate::platform::macos::compute::neural_engine::NeuralEngine::new()
 //   - crate::platform::macos::compute::simd_group::simd_config_for_chip()
 //   - crate::platform::macos::memory::unified_allocator::UnifiedAllocator::new()
-//   - crates/gargantua-app/src/app.rs  — stores ChipInfo for lifetime of app
+//   - crates/gargantua-core/src/app.rs  — stores ChipInfo for lifetime of app
 //
 // PUBLIC TYPES:
 //

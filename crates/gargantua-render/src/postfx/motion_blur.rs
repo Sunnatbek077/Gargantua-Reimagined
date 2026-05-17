@@ -28,7 +28,7 @@
 //     - bytemuck::{Pod, Zeroable}
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs — registered in FrameGraph (post-fx chain)
+//   - crates/gargantua-core/src/app.rs — registered in FrameGraph (post-fx chain)
 //
 // FRAME GRAPH POSITION:
 //   Reads:  hdr_framebuffer, velocity_buffer

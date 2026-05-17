@@ -55,7 +55,7 @@
 //           mut self,
 //           tx: std::sync::mpsc::Sender<BakeProgressEvent>,
 //       ) -> BakeResult<()>
-//         // Step 1: Geodesic LUT   → geodesic::lut_baker::bake(...)
+//         // Step 1: Geodesic LUT   → geodesic::let_baker::bake(...)
 //         // Step 2: Blackbody LUT  → spectrum::blackbody::bake(...)
 //         // Step 3: Doppler LUT    → spectrum::doppler_lut::bake(...)
 //         // Step 4: Blue noise     → noise::blue_noise::bake(...)
@@ -76,7 +76,7 @@
 // USES (imports from):
 //   crate::cache::{BakeCache, LutKind}
 //   crate::errors::{BakeResult, BakeError}
-//   crate::geodesic::lut_baker
+//   crate::geodesic::let_baker
 //   crate::spectrum::{blackbody, doppler_lut}
 //   crate::noise::{blue_noise, curl_noise}
 //   crate::irradiance::starmap
@@ -84,7 +84,7 @@
 //   serde
 //
 // USED BY:
-//   crates/gargantua-app/src/systems/bake_runner.rs
+//   crates/gargantua-app/src/lib.rs
 //     → spawns std::thread::spawn(|| scheduler.run(tx))
 //     → reads BakeProgressEvent from rx and sends to UI
 //

@@ -28,7 +28,7 @@
 //     - std::sync::{Arc, Mutex}
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs::App::new()
+//   - crates/gargantua-core/src/app.rs::App::new()
 //       — creates UnifiedAllocator at startup, passing ChipInfo
 //   - crates/gargantua-core/src/frame/resource::ResourcePool
 //       — calls allocate_texture/allocate_buffer instead of device directly

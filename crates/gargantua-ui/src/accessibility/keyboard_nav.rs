@@ -53,7 +53,7 @@
 // USED BY:
 //   crates/gargantua-ui/src/hud/mod.rs
 //     → calls process() each frame, draw_focus_ring() after all UI
-//   crates/gargantua-app/src/input/input_router.rs
+//   crates/gargantua-app/src/systems/input.rs
 //     → checks is_focused() to suppress camera input when UI is focused
 //
 // NOTE FOR AI:

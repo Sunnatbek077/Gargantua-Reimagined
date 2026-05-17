@@ -51,7 +51,7 @@
 //   - systems/input.rs       → calls registry.tick_all() each frame
 //   - lib.rs                 → calls registry.register() for built-in plugins
 //   - plugin/scripting.rs    → registers itself into the registry on startup
-//   - ui/menu/tabs/plugin_tab.rs → calls registry.list() and failed_plugins()
+//   - PLANNED: crates/gargantua-ui/src/menu/tabs/plugin_tab.rs → calls registry.list() and failed_plugins()
 //
 // NOTES:
 //   - IndexMap preserves insertion order, which matters for plugins that

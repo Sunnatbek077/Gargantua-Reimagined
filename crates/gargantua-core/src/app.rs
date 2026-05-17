@@ -7,7 +7,7 @@
 //   subsystems (GPU context, frame graph, resource pool, profiler, quality
 //   detector, adaptive quality, clock, and platform-specific handles).
 //   Provides the render_frame() method called by the winit event loop
-//   (gargantua-app/src/main.rs) on every frame.
+//   (PLANNED: crates/gargantua-app/src/main.rs) on every frame.
 //
 // SIZE: ~320 lines
 //
@@ -31,7 +31,7 @@
 //     - std::sync::Arc
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/main.rs  — creates App::new() and calls render_frame()
+//   - PLANNED: crates/PLANNED: crates/gargantua-app/src/main.rs  — creates App::new() and calls render_frame()
 //
 // PUBLIC TYPES:
 //
@@ -109,7 +109,7 @@
 //   - SurfaceLost is a recoverable error: handle_resize() recreates the swap chain.
 //     Any other CoreError from render_frame() is fatal (log + exit).
 //   - The pass registration callback pattern (step 6) is defined in
-//     gargantua-app/src/app.rs which wraps gargantua-core's App.
+//     crates/gargantua-app/src/lib.rs — composition root; constructs gargantua_core::app::App
 // =============================================================================
 
 use std::sync::Arc;

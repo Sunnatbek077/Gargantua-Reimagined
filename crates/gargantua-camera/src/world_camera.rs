@@ -28,7 +28,7 @@
 //     - winit::keyboard::KeyCode  (for InputState)
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs::App::render_frame()
+//   - crates/gargantua-core/src/app.rs::App::render_frame()
 //       — calls WorldCamera::update() then uses view/proj matrices
 //   - crates/gargantua-render/src/bindgroups::scene.rs::build_uniforms()
 //       — calls WorldCamera::view_matrix(), proj_matrix(), position(), etc.

@@ -34,7 +34,7 @@
 //   - crates/gargantua-render/src/pipelines/lensing.rs    — same
 //   - crates/gargantua-render/src/postfx/taa.rs           — reads frame_idx
 //   - crates/gargantua-render/src/postfx/film_grain.rs    — reads elapsed_s
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — calls SceneBindGroup::update() each frame before graph.execute()
 //
 // PUBLIC TYPES:

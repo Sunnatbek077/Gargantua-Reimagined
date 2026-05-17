@@ -23,7 +23,7 @@
 // CALLED BY:
 //   - crate::platform::macos::memory::unified_allocator::UnifiedAllocator
 //       — calls respond_to_pressure() on pressure level change
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — calls quality_override() each frame to check SPP reduction
 //
 // PUBLIC TYPES:

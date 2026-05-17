@@ -34,7 +34,7 @@
 //   - crates/gargantua-render/src/pipelines/accretion.rs  — group(1)
 //   - crates/gargantua-render/src/pipelines/starfield.rs  — group(1)
 //   - crates/gargantua-render/src/postfx/film_grain.rs    — blue_noise_3d
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — creates TexturesBindGroup once after bake completes
 //
 // PUBLIC TYPES:

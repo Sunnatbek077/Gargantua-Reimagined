@@ -28,7 +28,7 @@
 //     - bytemuck::{Pod, Zeroable}
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs — registered after accretion in FrameGraph
+//   - crates/gargantua-core/src/app.rs — registered after accretion in FrameGraph
 //
 // PUBLIC TYPES:
 //

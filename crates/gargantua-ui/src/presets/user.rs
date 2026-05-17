@@ -63,7 +63,7 @@
 // USED BY:
 //   crates/gargantua-ui/src/menu/tabs/export_tab.rs
 //     → calls save(), delete(), names(), get()
-//   crates/gargantua-app/src/settings.rs
+//   crates/gargantua-app/src/state/sim_state.rs
 //     → UserPresetStore initialized at startup with app data dir
 //
 // NOTE FOR AI:

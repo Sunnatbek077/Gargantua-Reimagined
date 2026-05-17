@@ -42,7 +42,7 @@
 //       `pub fn unload_script(&mut self, name: &str)`
 //             Removes script from self.scripts.
 //       `pub fn error_log(&self) -> &[String]`
-//             Returns runtime error messages; used by ui/menu/tabs/plugin_tab.rs.
+//             Returns runtime error messages; used by PLANNED: crates/gargantua-ui/src/menu/tabs/plugin_tab.rs.
 //
 // OUTBOUND DEPENDENCIES:
 //   - plugin/mod.rs           → Plugin trait, PluginContext
@@ -54,7 +54,7 @@
 //
 // INBOUND:
 //   - plugin/registry.rs      → registered as a built-in plugin at startup
-//   - ui/menu/tabs/plugin_tab.rs → calls load_script() from the script editor UI
+//   - PLANNED: crates/gargantua-ui/src/menu/tabs/plugin_tab.rs → calls load_script() from the script editor UI
 //
 // NOTES:
 //   - The Lua sandbox disables io, os, package, and debug libraries.

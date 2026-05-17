@@ -44,7 +44,7 @@
 //   - errors.rs                      → VideoError
 //
 // INBOUND (who calls best_encoder):
-//   - video/offline/renderer.rs → calls best_encoder() once at render startup
+//   - crates/gargantua-video/src/offline/renderer.rs → calls best_encoder() once at render startup
 //
 // NOTES:
 //   - is_available() is called for hardware encoders before selecting them.

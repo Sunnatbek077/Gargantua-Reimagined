@@ -16,8 +16,8 @@
 //   External:  x264_sys (FFI to x264.dll): x264_t, x264_param_t, x264_nal_t
 //              x265_sys (FFI to x265.dll): x265_encoder, x265_param, x265_picture
 // CALLED BY:
-//   crates/gargantua-video/src/encoder/windows.rs — fallback encoder
-//   crates/gargantua-video/src/encoder/wasm.rs    — WASM always uses software
+//   crates/gargantua-video/src/encode/mod.rs — fallback encoder
+//   crates/gargantua-video/src/encode/mod.rs    — WASM always uses software
 //
 // CODEC SUPPORT:
 //   H.264:  libx264 — CRF mode (constant rate factor 0-51, default 18)

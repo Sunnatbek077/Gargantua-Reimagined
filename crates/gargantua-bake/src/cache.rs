@@ -76,7 +76,7 @@
 //   crate::scheduler::BakeScheduler::run()
 //     → checks is_fresh() before each LUT bake step
 //     → calls mark_baked() after each successful LUT write
-//   tests/cache.rs
+//   crates/gargantua-bake/tests/cache.rs
 //     → validates cache hit/miss logic
 //
 // NOTE FOR AI:

@@ -12,7 +12,7 @@
 //       (wasm.rs handles this).
 //
 //   Exposes a single init() function called once at application startup
-//   in gargantua-app/src/app.rs before any other system is initialized.
+//   in crates/gargantua-core/src/app.rs::App::new() before any other system is initialized.
 //
 // SIZE: ~60 lines
 //
@@ -24,7 +24,7 @@
 //     - tracing::{info, warn, error, debug}
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs::App::new()  — called first before GPU init
+//   - crates/gargantua-core/src/app.rs::App::new()  — called first before GPU init
 //
 // PUBLIC FUNCTIONS:
 //

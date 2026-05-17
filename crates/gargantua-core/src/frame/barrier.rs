@@ -67,10 +67,10 @@
 //   std::sync::Arc
 //
 // USED BY:
-//   crates/gargantua-app/src/app.rs
+//   crates/gargantua-core/src/app.rs
 //     → barrier.submit(queue, encoder) each frame in the render loop
 //     → barrier.wait() before window resize or app shutdown
-//   crates/gargantua-render/src/pipelines/accumulate.rs
+//   PLANNED: crates/gargantua-render/src/pipelines/accumulate.rs
 //     → barrier.wait() before reading back the accumulated pixel buffer
 //   crates/gargantua-bake/src/geodesic/let_baker.rs
 //     → barrier.wait() before GPU→CPU buffer readback after bake dispatch

@@ -43,7 +43,7 @@
 //
 // USED BY:
 //   crates/gargantua-ui/src/overlay/mod.rs
-//   crates/gargantua-app/src/app.rs → update() on RenderProgressEvent
+//   crates/gargantua-core/src/app.rs → update() on RenderProgressEvent
 //
 // NOTE FOR AI:
 //   Tiled rendering: large renders split into tiles for GPU memory.

@@ -19,7 +19,7 @@
 //
 // USED BY:
 //   crates/gargantua-ui/src/lib.rs  → pub mod accessibility
-//   crates/gargantua-app/src/input/input_router.rs
+//   crates/gargantua-app/src/systems/input.rs
 //     → KeyboardNav used to intercept tab/arrow key events
 //
 // NOTE FOR AI:

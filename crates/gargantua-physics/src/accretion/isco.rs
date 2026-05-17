@@ -53,7 +53,7 @@
 //     → r_isco uploaded to accretion_disk.wgsl as disk inner radius
 //   crates/gargantua-ui/src/menu/tabs/physics_tab.rs
 //     → displays IscoProperties: r_ISCO, binding_energy, orbital_freq
-//   tests/isco.rs
+//   crates/gargantua-physics/tests/isco.rs
 //     → validates against M87* (a=0.9 → r≈2.32M) and SgrA* (a=0.6 → r≈3.83M)
 //
 // NOTE FOR AI:

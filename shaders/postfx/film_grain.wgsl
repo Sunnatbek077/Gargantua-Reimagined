@@ -44,7 +44,7 @@
 //   Blue noise: assets/baked/blue_noise_256.exr (loaded by render pipeline)
 //
 // USED BY:
-//   crates/gargantua-render/src/pipelines/postfx.rs  → last postfx pass
+//   crates/gargantua-render/src/postfx/film_grain.rs
 //
 // NOTE FOR AI:
 //   Applied AFTER tonemap — operates in LDR sRGB [0,1] range.

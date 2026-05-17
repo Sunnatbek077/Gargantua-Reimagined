@@ -36,7 +36,7 @@
 //       — creates EdrOutput after surface configuration
 //   - crates/gargantua-render/src/postfx/tonemap.rs
 //       — queries edr_headroom() each frame
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — calls poll_headroom_change() each frame
 //
 // PUBLIC TYPES:

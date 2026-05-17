@@ -37,7 +37,7 @@
 //     - std::sync::Arc
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — registers RayMarchPass into FrameGraph each frame
 //
 // PUBLIC TYPES:

@@ -29,7 +29,7 @@
 //   - None (pure time arithmetic)
 //
 // INBOUND (who uses OfflineMotionBlur):
-//   - video/offline/renderer.rs → calls subframe_offsets() to schedule
+//   - crates/gargantua-video/src/offline/renderer.rs → calls subframe_offsets() to schedule
 //                                   multiple render passes per output frame
 //
 // NOTES:

@@ -35,7 +35,7 @@
 //
 //   CALLED BY:
 //     - crate::world_camera::WorldCamera::update()
-//     - crates/gargantua-ui/src/panel::settings.rs (time scale slider)
+//     - crates/gargantua-ui/src/menu/tabs/render_tab.rs (time scale slider)
 //
 // SIZE: ~180 lines
 //

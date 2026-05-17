@@ -48,7 +48,7 @@
 //
 // USED BY:
 //   crates/gargantua-ui/src/overlay/mod.rs
-//   crates/gargantua-app/src/app.rs
+//   crates/gargantua-core/src/app.rs
 //     → calls bake_progress.update() on BakeProgressEvent
 //
 // NOTE FOR AI:

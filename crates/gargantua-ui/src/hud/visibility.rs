@@ -44,7 +44,7 @@
 //   hud/mod.rs         → VisibilityState owned by Hud
 //   hud/toggle_button.rs → reads/writes menu_open
 //   overlay/mod.rs     → checks each flag before drawing overlays
-//   crates/gargantua-app/src/settings.rs
+//   crates/gargantua-app/src/state/sim_state.rs
 //     → serializes/deserializes VisibilityState to disk
 //
 // NOTE FOR AI:

@@ -1,37 +1,45 @@
 // ============================================================
-// FILE: crates/gargantua-physics/src/lib.rs
-// LINES: ~40
-// CATEGORY: Physics — crate entry point
-// PLATFORM: cross-platform (Mac + Windows + WASM)
+// FILE: crates/gargantua-core/src/lib.rs
+// LINES: ~45
+// CATEGORY: Core — crate entry point
+// PLATFORM: Mac + Windows + WASM
 // ============================================================
 //
 // PURPOSE:
-//   Public interface of the gargantua-physics crate.
-//   Re-exports all sub-modules so external crates only
-//   need to import from this single entry point.
-//   Contains zero computation logic.
+//   Public interface of the gargantua-core crate.
+//   Declares engine foundation modules: GPU context, frame graph,
+//   resource pool, clock, adaptive quality, platform HAL, and App.
+//   Contains zero per-frame logic — only module wiring and re-exports.
 //
-// CONTENTS (~40 lines):
-//   pub mod errors;      // PhysicsError enum (thiserror)
-//   pub mod units;       // G=c=1 natural unit helpers
-//   pub mod metric;      // MetricTensor trait + Kerr/Schwarzschild
-//   pub mod geodesic;    // RK4 integrator + adaptive step
-//   pub mod accretion;   // ISCO, Novikov-Thorne, MHD, spectrum
-//   pub mod effects;     // Doppler, redshift, aberration, Penrose
-//   Crate-level attributes: #![deny(unsafe_code)], #![warn(missing_docs)]
+// CONTENTS (~45 lines):
+//   pub mod app;        // App struct, render_frame(), winit integration
+//   pub mod clock;      // DeltaTime, simulation vs wall clock
+//   pub mod errors;     // CoreError (thiserror)
+//   pub mod frame;      // FrameGraph, Pass trait, ResourcePool, barriers
+//   pub mod gpu;        // GpuContext, GpuSurface, GpuProfiler, limits
+//   pub mod logging;    // tracing subscriber setup (native + WASM)
+//   pub mod platform;   // macOS / Windows HAL (cfg-gated subtrees)
+//   pub mod quality;    // QualityPreset, AdaptiveQuality, detector
 //
 // USES (imports from):
-//   errors.rs, units.rs, metric/mod.rs, geodesic/rk4.rs,
-//   accretion/isco.rs, effects/doppler.rs (all via pub mod)
+//   All sub-modules above (via `pub mod` only).
 //
 // USED BY:
-//   crates/gargantua-render/src/pipelines/geodesic_gpu.rs
-//   crates/gargantua-render/src/pipelines/accretion.rs
-//   crates/gargantua-ui/src/menu/tabs/physics_tab.rs
-//   crates/gargantua-app/src/systems/physics_sync.rs
+//   crates/gargantua-core/src/app.rs
+//     → re-exports and composes subsystems declared here
+//   crates/gargantua-render/src/lib.rs
+//     → GpuContext, FrameGraph, Pass, ResourcePool
+//   crates/gargantua-bake/src/scheduler.rs
+//     → GpuContext for offline LUT compute
+//   crates/gargantua-video/src/offline/renderer.rs
+//     → GpuContext, ResourcePool for export path
+//   PLANNED: crates/gargantua-app/src/main.rs
+//     → binary entry; constructs gargantua_core::app::App
 //
 // NOTE FOR AI:
-//   Pure module declarations + re-exports only.
-//   No structs, no functions, no math here.
-//   Every new sub-module must be registered here with `pub mod`.
+//   This file is module declarations + re-exports only.
+//   The runnable application loop lives in app.rs (this crate), not in
+//   gargantua-app. gargantua-app orchestrates SimState, plugins, and UI;
+//   gargantua-core owns GPU, frame graph, and platform HAL.
+//   Register every new top-level module here with `pub mod`.
 // ============================================================

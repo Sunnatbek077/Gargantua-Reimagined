@@ -1,5 +1,5 @@
 // =============================================================================
-// FILE: crates/gargantua-video/src/encode/windows/qsv_h265.rs
+// FILE: crates/gargantua-video/src/encode/windows/qsv.h265.rs
 // CRATE: gargantua-video
 // LINES: ~180
 // PLATFORM: Windows only (Intel)

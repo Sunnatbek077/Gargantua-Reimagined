@@ -54,7 +54,7 @@
 //   crate::geodesic::termination → TerminationCondition
 //
 // USED BY:
-//   crates/gargantua-bake/src/geodesic/lut_baker.rs
+//   crates/gargantua-bake/src/geodesic/let_baker.rs
 //     → AdaptiveIntegrator for higher-accuracy offline LUT baking
 //
 // NOTE FOR AI:

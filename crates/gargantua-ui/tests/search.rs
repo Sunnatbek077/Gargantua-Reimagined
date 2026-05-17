@@ -1,5 +1,5 @@
 // ============================================================
-// FILE: crates/gargantua-ui/tests/preset.rs
+// FILE: crates/gargantua-ui/tests/search.rs
 // LINES: ~260
 // CATEGORY: Integration test — Preset save/load/validate
 // RUN: cargo test --package gargantua-ui --test preset

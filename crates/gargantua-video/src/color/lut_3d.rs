@@ -40,7 +40,7 @@
 // INBOUND (who uses Lut3d):
 //   - video/src/color/transform.rs → loads a .cube LUT and chains it after
 //                                     the colour matrix transform
-//   - video/offline/renderer.rs    → applies lut_3d to each finished frame
+//   - crates/gargantua-video/src/offline/renderer.rs    → applies lut_3d to each finished frame
 //                                     before encoding
 //
 // NOTES:

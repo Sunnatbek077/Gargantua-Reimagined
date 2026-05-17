@@ -52,7 +52,7 @@
 // USED BY:
 //   Every UI file in this crate that displays text:
 //     menu/tabs/*.rs, overlay/*.rs, hud/mod.rs
-//   crates/gargantua-app/src/settings.rs
+//   crates/gargantua-app/src/state/sim_state.rs
 //     → saves/loads Language enum to disk
 //
 // NOTE FOR AI:

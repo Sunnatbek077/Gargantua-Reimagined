@@ -50,7 +50,7 @@
 //   No WGSL imports.
 //
 // USED BY:
-//   crates/gargantua-render/src/pipelines/taa.rs
+//   crates/gargantua-render/src/postfx/taa.rs
 //     → run once per frame after ray marching, before bloom
 //
 // NOTE FOR AI:

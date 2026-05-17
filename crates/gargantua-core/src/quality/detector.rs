@@ -25,9 +25,9 @@
 //   External: none
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs::App::new()
+//   - crates/gargantua-core/src/app.rs::App::new()
 //       — QualityDetector::detect(&ctx) called once at startup
-//   - crates/gargantua-ui/src/panel::settings.rs
+//   - crates/gargantua-ui/src/menu/tabs/render_tab.rs
 //       — displays detected preset name
 //
 // PUBLIC TYPES:

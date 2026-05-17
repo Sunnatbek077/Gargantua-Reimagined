@@ -22,7 +22,7 @@
 //     - bytemuck::{Pod, Zeroable}
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — registered after bloom in the post-fx chain, before film_grain
 //
 // PUBLIC TYPES:

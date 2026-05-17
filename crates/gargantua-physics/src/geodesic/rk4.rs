@@ -8,7 +8,7 @@
 // PURPOSE:
 //   CPU-side 4th-order Runge-Kutta integrator for null geodesics
 //   (photon paths) through any MetricTensor. Three roles:
-//     1. Offline LUT baking — called by lut_baker.rs for every
+//     1. Offline LUT baking — called by let_baker.rs (geodesic LUT) for every
 //        (spin, impact_param) cell in the 2D geodesic LUT
 //     2. Validation baseline — compared against GPU RK4 output
 //     3. Real-time camera gravity mode — traces camera geodesic
@@ -62,13 +62,13 @@
 //                                   disk_intersection()
 //
 // USED BY:
-//   crates/gargantua-bake/src/geodesic/lut_baker.rs
+//   crates/gargantua-bake/src/geodesic/let_baker.rs
 //     → trace() for every (spin, b) cell in 2D LUT
 //   crate::geodesic::adaptive
 //     → wraps step() with Cash-Karp error estimate
 //   crates/gargantua-camera/src/modes/gravity.rs
 //     → real-time camera geodesic tracing
-//   tests/geodesic.rs
+//   crates/gargantua-physics/tests/geodesic.rs
 //     → photon orbit check: r stabilises at r_ph = 3M
 //
 // NOTE FOR AI:

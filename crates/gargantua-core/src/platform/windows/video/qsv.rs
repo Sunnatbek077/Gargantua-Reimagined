@@ -14,7 +14,7 @@
 //   External:  mfx_sys (FFI to libmfx.dll / Intel VPL): MFXVideoENCODE,
 //              mfxSession, mfxVideoParam, mfxBitstream, mfxFrameSurface1
 // CALLED BY:
-//   crates/gargantua-video/src/encoder/windows.rs — Intel encoder branch
+//   crates/gargantua-video/src/encode/mod.rs — Intel encoder branch
 //
 // CODEC SUPPORT:
 //   H.264:  MFX_CODEC_AVC   — all Intel GPU generations

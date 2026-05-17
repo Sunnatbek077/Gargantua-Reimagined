@@ -35,7 +35,7 @@
 //   - None (pure CPU arithmetic, no external crates)
 //
 // INBOUND (who uses FrameAccumulator):
-//   - video/offline/renderer.rs → creates one accumulator, calls add_frame()
+//   - crates/gargantua-video/src/offline/renderer.rs → creates one accumulator, calls add_frame()
 //                                   target_spp times, then average() for output
 //
 // NOTES:

@@ -39,7 +39,7 @@
 //   - errors.rs       → VideoError
 //
 // INBOUND (who uses ColorTransform):
-//   - video/offline/renderer.rs → instantiated from OfflineConfig.output_space,
+//   - crates/gargantua-video/src/offline/renderer.rs → instantiated from OfflineConfig.output_space,
 //                                  called per frame before encoding
 //
 // NOTES:

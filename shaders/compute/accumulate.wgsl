@@ -48,8 +48,10 @@
 //   No WGSL imports. Self-contained.
 //
 // USED BY:
-//   crates/gargantua-render/src/pipelines/accumulate.rs
-//     → dispatched after each ray_march.wgsl pass
+//   crates/gargantua-video/src/offline/accumulator.rs
+//     → orchestrates sub-frame GPU accumulation for offline export
+//   PLANNED: crates/gargantua-render/src/pipelines/accumulate.rs
+//     → Pass wrapper that dispatches this shader after ray_march.wgsl
 //     → dispatch: (width/8, height/8, 1)
 //
 // NOTE FOR AI:

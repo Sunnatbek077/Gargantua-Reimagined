@@ -24,7 +24,7 @@
 //     - bytemuck::{Pod, Zeroable}
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs — registered after TAA in post-fx chain
+//   - crates/gargantua-core/src/app.rs — registered after TAA in post-fx chain
 //
 // PUBLIC TYPES:
 //

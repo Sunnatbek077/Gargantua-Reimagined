@@ -9,7 +9,7 @@
 //   dedicated video encoder hardware, allowing encoding to run in parallel
 //   with rendering at near-zero performance cost.
 //
-//   Used by gargantua-video/src/encoder/ when an NVIDIA GPU is detected.
+//   Used by gargantua-video/src/encode/ when an NVIDIA GPU is detected.
 //   Falls back to software.rs if NVENC is unavailable or the user opts out.
 //
 // SIZE: ~200 lines
@@ -28,7 +28,7 @@
 //     - std::path::PathBuf
 //
 // CALLED BY:
-//   - crates/gargantua-video/src/encoder/windows.rs
+//   - crates/gargantua-video/src/encode/mod.rs
 //       — creates NvencEncoder if supports_nvenc() returns true
 //
 // PUBLIC TYPES:

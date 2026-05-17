@@ -32,7 +32,7 @@
 // CALLED BY:
 //   - crate::platform::macos::memory::unified_allocator::UnifiedAllocator
 //       — registers callback via watch()
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — polls current_level() each frame to check if quality should drop
 //
 // PUBLIC TYPES:

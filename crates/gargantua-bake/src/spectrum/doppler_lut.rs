@@ -38,7 +38,7 @@
 //
 // USED BY:
 //   crate::scheduler::BakeScheduler::run()  → bake step 3
-//   tests/lut_baker.rs → validates Doppler LUT shift values
+//   crates/gargantua-bake/tests/lut_baker.rs → validates Doppler LUT shift values
 //
 // NOTE FOR AI:
 //   LUT axis 0 (Y): β ∈ [0.0, 0.99], n_beta steps (default 256).

@@ -82,7 +82,7 @@
 //   presets/builtin.rs  → BuiltinPreset returns PresetSchema values
 //   presets/user.rs     → UserPresetStore stores Vec<PresetSchema>
 //   menu/tabs/export_tab.rs → save/load PresetSchema
-//   crates/gargantua-app/src/app.rs
+//   crates/gargantua-core/src/app.rs
 //     → applies PresetSchema to AppState on preset load
 //
 // NOTE FOR AI:

@@ -29,7 +29,7 @@
 //
 // CALLED BY:
 //   - crate::gpu::context::GpuContext::new()   — Windows branch
-//   - crates/gargantua-app/src/app.rs
+//   - crates/gargantua-core/src/app.rs
 //       — calls poll_hdr_state() each frame to detect HDR toggle
 //
 // PUBLIC TYPES:

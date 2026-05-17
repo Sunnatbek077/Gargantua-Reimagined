@@ -44,7 +44,7 @@
 //   No WGSL imports.
 //
 // USED BY:
-//   crates/gargantua-render/src/pipelines/bloom.rs
+//   crates/gargantua-render/src/postfx/bloom.rs
 //     → second pass: upsample 1/8 → 1/4 → 1/2 → full (3 upsample passes)
 //     → final upsample result added to HDR frame before tonemap
 //

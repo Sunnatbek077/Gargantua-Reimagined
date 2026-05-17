@@ -39,7 +39,7 @@
 //
 // USED BY:
 //   crate::scheduler::BakeScheduler::run()  → bake step 2
-//   tests/lut_baker.rs → validates LUT values at known temperatures
+//   crates/gargantua-bake/tests/lut_baker.rs → validates LUT values at known temperatures
 //
 // NOTE FOR AI:
 //   LUT width = params.blackbody_lut_size (default 1024).

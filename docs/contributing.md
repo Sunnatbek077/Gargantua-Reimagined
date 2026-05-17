@@ -156,24 +156,48 @@ Key enforced lints:
 2. Implement `Pass` trait (or `ComputePass` / `RenderPass` marker trait)
 3. Declare `reads()` and `writes()` resource lists so `FrameGraph::compile()` places it correctly
 4. Create the WGSL shader in `shaders/my_pass.wgsl`
-5. Register the pass in `gargantua-app/src/lib.rs` (or the appropriate startup function)
+5. Register the pass via the callback in `crates/gargantua-core/src/app.rs` (wired from `crates/gargantua-app/src/lib.rs`)
 6. Run `build/validate_shaders.sh` to verify the shader
 7. Add a `cargo test` integration test verifying the pass compiles and records without panicking
 
-**File header comment template** (required for all new `.rs` files — see existing files for the full format):
+**File header comments** are required for every new `.rs` and `.wgsl` file. They are the primary spec for AI-assisted development in this repo.
+
+- Full rules and path cheat-sheet: **`docs/ai-guide.md`**
+- Architecture context: **`docs/architecture.md`** (section "Source comments")
+
+**Rules:**
+
+1. Use the exact on-disk path in `// FILE:` or the banner line 2.
+2. Cross-references use full paths: `crates/<crate>/src/...` (never bare `tests/foo.rs`).
+3. Reference `crates/gargantua-core/src/app.rs` for the engine loop — not `gargantua-app/src/app.rs`.
+4. PostFX Rust passes live in `src/postfx/`; scene passes in `src/pipelines/`.
+5. Mark not-yet-created files with `PLANNED: crates/.../file.rs`.
+6. One header block per physical file (no concatenating multiple `FILE:` blocks in one path).
+
+**Compute pass example** (`pipelines/`):
 
 ```rust
 // =============================================================================
 // FILE: crates/gargantua-render/src/pipelines/my_pass.rs
 // CRATE: gargantua-render
-// LINES: ~NNN
-// PLATFORM: Mac + Windows + WASM
-// =============================================================================
-//
-// PURPOSE:
-//   One paragraph describing what this file does and why it exists.
 // ...
+// USED BY:
+//   crates/gargantua-core/src/app.rs
 // =============================================================================
+```
+
+**PostFX pass example** (`postfx/` + matching shader):
+
+```rust
+// FILE: crates/gargantua-render/src/postfx/my_pass.rs
+// USED BY:
+//   crates/gargantua-core/src/app.rs
+```
+
+```wgsl
+// FILE: shaders/postfx/my_pass.wgsl
+// USED BY:
+//   crates/gargantua-render/src/postfx/my_pass.rs
 ```
 
 ---
@@ -297,9 +321,9 @@ WGSL shaders cannot be unit-tested directly. Instead:
 
 ## Documentation
 
-- Every public Rust type and function must have a `///` doc comment.
-- Every `.rs` file must have the full file header comment block (as described above and shown in all existing files).
-- `docs/` markdown files should be updated when architecture or APIs change.
+- Every public Rust type and function must have a `///` doc comment (once implementation exists).
+- Every `.rs` and `.wgsl` file must have a file header comment block (`docs/ai-guide.md`).
+- Update `docs/architecture.md` and `docs/ai-guide.md` when module paths or crate boundaries change.
 - Physics formulae should be typeset in code blocks using standard mathematical notation (not LaTeX, since GitHub renders plain markdown).
 
 ---

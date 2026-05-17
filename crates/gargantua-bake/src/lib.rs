@@ -30,7 +30,7 @@
 //   All sub-modules above
 //
 // USED BY:
-//   crates/gargantua-app/src/systems/bake_runner.rs
+//   crates/gargantua-app/src/lib.rs
 //     → BakeScheduler::run(params) triggered by AppEvent::StartBake
 //   crates/gargantua-ui/src/menu/tabs/bake_tab.rs
 //     → BakeParams struct for UI controls

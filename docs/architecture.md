@@ -5,22 +5,28 @@
 Gargantua is a physically accurate black hole renderer built in Rust. It runs natively on macOS (Apple Silicon + Intel) and Windows (NVIDIA/AMD/Intel GPU), and in the browser via WebAssembly. The codebase is split into eight focused crates that communicate through well-defined interfaces, with zero circular dependencies.
 
 ```
-gargantua-app          ← top-level orchestrator (binary entry point)
-├── gargantua-core     ← GPU context, frame graph, quality, platform HAL
+gargantua-app          ← composition root (SimState, plugins, systems); PLANNED: src/main.rs
+├── gargantua-core     ← App, GPU context, frame graph, quality, platform HAL
 ├── gargantua-physics  ← Kerr metric, geodesic integrator, accretion disk
 ├── gargantua-bake     ← pre-computed LUT generation (geodesic, spectrum, noise)
-├── gargantua-render   ← render pipelines, shaders, post-processing
+├── gargantua-render   ← render pipelines, postfx, shaders, hot-reload
 ├── gargantua-camera   ← camera modes, paths, relativistic effects
 ├── gargantua-video    ← hardware encoding, denoising, offline render
 └── gargantua-ui       ← HUD, menus, overlays, accessibility
 ```
+
+> **AI agents:** The runnable event loop and `App::tick()` live in `crates/gargantua-core/src/app.rs`.
+> `gargantua-app` wires domain state (`SimState`, `PhysicsSync`, plugins) into that engine.
+> See `docs/ai-guide.md` for file-path conventions used in source comments.
 
 ---
 
 ## Crate Responsibilities
 
 ### `gargantua-core`
-The engine foundation. Owns the `wgpu` device and queue, the `FrameGraph` (a DAG of render and compute passes), the `Clock` (delta time, simulation time), and the `AdaptiveQuality` system. Contains all platform-specific hardware abstraction (HAL) code under `platform/macos/` and `platform/windows/`.
+The engine foundation. Owns **`App`** (winit event loop, `render_frame()`, pass registration hook), the `wgpu` device and queue, the `FrameGraph` (a DAG of render and compute passes), the `Clock` (delta time, simulation time), and the `AdaptiveQuality` system. Contains all platform-specific hardware abstraction (HAL) code under `platform/macos/` and `platform/windows/`.
+
+**Entry points:** `crates/gargantua-core/src/lib.rs`, `crates/gargantua-core/src/app.rs`
 
 **Key types:** `App`, `GpuContext`, `FrameGraph`, `ResourcePool`, `QualityPreset`, `GpuProfiler`
 
@@ -32,12 +38,16 @@ Pure computation — no GPU code. Implements the Kerr-Newman metric in Boyer-Lin
 ### `gargantua-bake`
 Offline pre-computation that runs once at startup (or is loaded from disk cache). Generates the geodesic deflection LUT (GPU compute via WGSL), blackbody/Doppler colour LUTs (CPU via physics crate), and 3D blue noise textures (GPU, void-and-cluster algorithm). All outputs are cached on disk with SHA-256 invalidation.
 
-**Key types:** `BakeScheduler`, `BakeCache`, `GeodesicLutBaker`, `BlueNoiseBaker`
+**Key types:** `BakeScheduler`, `BakeCache`, geodesic baker in `geodesic/let_baker.rs`, `BlueNoiseBaker`
+
+**Note:** The geodesic LUT module is `let_baker.rs` (LET parameterisation). Integration tests are in `tests/lut_baker.rs`.
 
 ### `gargantua-render`
-All GPU rendering. Registered render and compute passes: ray marching (`ray_march.wgsl`), accretion disk (`accretion.wgsl`), gravitational lensing (`lensing.wgsl`), starfield, lens flare, bloom, TAA, and tonemapping. Passes are registered into `FrameGraph` from `gargantua-core` and execute in DAG-resolved order every frame.
+All GPU rendering. Scene passes live under `src/pipelines/` (ray march, accretion, lensing, starfield, geodesic GPU). Post-processing lives under `src/postfx/` (bloom, TAA, tonemap, chromatic aberration, film grain, motion blur, lens flare). WGSL sources are in `shaders/` at the repo root. Passes register into `FrameGraph` via a callback from `gargantua-core/src/app.rs` (wired by `gargantua-app/src/lib.rs`).
 
-**Key types:** `RayMarchPipeline`, `AccretionPipeline`, `TaaPipeline`, `TonemapPipeline`, `PhysicsUniforms`
+**Key types:** `RayMarchPass`, `AccretionPass`, `TaaPass`, `TonemapPass`, `PhysicsUniforms` (in `bindgroups/physics.rs`)
+
+**Shader hot-reload (dev):** `crates/gargantua-render/src/shader_reload.rs`
 
 ### `gargantua-camera`
 Camera system with five modes: Free-flight, Satellite orbit, Plunge (falling into the black hole), Gravity (camera follows a geodesic), and Path (scripted keyframe path). Also handles relativistic FOV correction (aberration), time dilation display, and the `CameraPath` recorder/playback used by the replay system.
@@ -55,15 +65,27 @@ All user interface: the physics/render/camera/accretion/export menu tabs, HUD st
 **Key types:** `MainMenu`, `StatsBar`, `PhysicsReadout`, `RenderProgress`, `PresetSelector`
 
 ### `gargantua-app`
-Top-level orchestrator. Wires all crates together: registers render passes into `FrameGraph`, drives `PhysicsSync` each frame, handles `UndoHistory`, manages the `PluginRegistry` (Lua scripting via `mlua`), and implements URL-based state sharing (`url_serde`). Contains the binary `main.rs` entry point.
+Composition root — no GPU code. Wires domain crates into `gargantua_core::app::App`: `PhysicsSync` each frame, `InputSystem`, `UndoHistory`, `PluginRegistry` (Lua via `mlua`), URL state sharing (`url_serde`), and replay recording.
+
+**Entry points:** `crates/gargantua-app/src/lib.rs` — **PLANNED:** `crates/gargantua-app/src/main.rs` (binary)
 
 **Key types:** `SimState`, `EventBus`, `UndoHistory`, `PhysicsSync`, `ReplaySystem`, `ScriptingPlugin`
+
+| Module | Path |
+|---|---|
+| Simulation state | `state/sim_state.rs` |
+| Events | `state/event_bus.rs` |
+| Undo / share URL | `state/undo.rs`, `state/url_serde.rs` |
+| Input (not `input_router`) | `systems/input.rs` |
+| Physics → GPU upload | `systems/physics_sync.rs` |
+| Replay | `systems/replay.rs` |
+| Plugins | `plugin/mod.rs`, `plugin/registry.rs`, `plugin/scripting.rs` |
 
 ---
 
 ## Frame Lifecycle
 
-Every rendered frame follows this sequence inside `App::tick()`:
+Every rendered frame follows this sequence inside `gargantua_core::app::App::tick()` (`crates/gargantua-core/src/app.rs`):
 
 ```
 1. Clock::tick()                  — advance wall time, compute DeltaTime
@@ -106,7 +128,7 @@ SimState (CPU, f64)
 
 ## Platform Abstraction
 
-Platform-specific code is isolated under `gargantua-core/src/platform/`. Feature detection happens at startup; runtime `if cfg!(target_os = "macos")` checks are avoided in favour of compile-time gates.
+Platform-specific code is isolated under `gargantua-core/src/platform/`. macOS HAL is under `platform/macos/`. Windows HAL is under `platform/windows/` (the Windows root module is currently inlined in `platform/mod.rs` behind `#[cfg(target_os = "windows")]` — see that file's header comment). Feature detection happens at startup; runtime `if cfg!(target_os = "macos")` checks are avoided in favour of compile-time gates.
 
 | Subsystem | macOS | Windows | WASM |
 |---|---|---|---|
@@ -139,7 +161,7 @@ If a cycle is detected in the declared dependencies, `compile()` returns `CoreEr
 
 All shaders are written in WGSL 1.0 and compiled by `naga` (wgpu's built-in compiler). There is no pre-compilation step for shaders — `naga` validates and transpiles to MSL / DXIL / SPIRV at runtime on first launch, then caches the compiled variants.
 
-In development builds (`feature = "hot-reload"`), `platform/common/shader_reload.rs` watches the `shaders/` directory with `notify` and triggers pipeline recreation on `.wgsl` file changes without restarting the app.
+In development builds (`feature = "hot-reload"`), `crates/gargantua-render/src/shader_reload.rs` watches the `shaders/` directory with `notify` and triggers pipeline recreation on `.wgsl` file changes without restarting the app.
 
 Shader validation is also run as a CI step via `build/validate_shaders.sh`, which calls `naga --validate` on every `.wgsl` file and checks for project-specific lint rules (no hardcoded physical constants, workgroup size consistency).
 
@@ -206,3 +228,39 @@ No crate depends on `gargantua-app`. The app crate is the composition root only.
 | Colour accuracy | LUT round-trip, matrix white-point | `cargo test` |
 
 Integration tests requiring a physical GPU are marked `#[ignore]` in CI and run on self-hosted runners with real hardware.
+
+---
+
+## Source comments (AI agent guide)
+
+Every `.rs` and `.wgsl` file carries a **file header comment block** describing purpose, dependencies, and cross-references. These headers are the primary onboarding material for AI agents working before full implementation exists.
+
+### Two header styles
+
+| Style | Used in | First line |
+|---|---|---|
+| `FILE:` block | `gargantua-physics`, `gargantua-bake`, `gargantua-app`, `gargantua-ui`, `gargantua-video` | `// FILE: crates/.../file.rs` |
+| Banner + `PURPOSE` | `gargantua-core`, `gargantua-render`, `gargantua-camera` | `// =========` then path in line 2 |
+
+Both styles must include **`PURPOSE`**, dependency lists, and accurate **full paths** (`crates/<crate>/...`).
+
+### Cross-reference rules
+
+- **`USED BY` / `CALLED BY`:** Only list files that exist, or prefix with **`PLANNED:`** if the path is specified but not yet created.
+- **Application loop:** Always `crates/gargantua-core/src/app.rs` — never `gargantua-app/src/app.rs`.
+- **User settings / SimState:** `crates/gargantua-app/src/state/sim_state.rs` — not `settings.rs`.
+- **Input routing:** `crates/gargantua-app/src/systems/input.rs` — not `input/input_router.rs`.
+- **Bake orchestration:** `crates/gargantua-bake/src/scheduler.rs` + UI `menu/tabs/bake_tab.rs` — not `systems/bake_runner.rs`.
+- **PostFX shaders:** `USED BY` → `crates/gargantua-render/src/postfx/<pass>.rs` — not `pipelines/postfx.rs`.
+- **Geodesic LUT baker:** `geodesic/let_baker.rs` (module); tests remain `tests/lut_baker.rs`.
+- **Video encoders:** `crates/gargantua-video/src/encode/` — not `encoder/`.
+
+### Common planned paths
+
+| Path | Role |
+|---|---|
+| `PLANNED: crates/gargantua-app/src/main.rs` | Binary entry |
+| `PLANNED: crates/gargantua-render/src/pipelines/accumulate.rs` | GPU wrapper for `shaders/compute/accumulate.wgsl` |
+| `PLANNED: crates/gargantua-ui/src/menu/tabs/plugin_tab.rs` | Plugin management UI |
+
+Full quick-reference: **`docs/ai-guide.md`**.

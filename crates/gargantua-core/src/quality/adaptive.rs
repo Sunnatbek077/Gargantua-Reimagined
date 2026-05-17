@@ -23,7 +23,7 @@
 //     - std::collections::VecDeque             — rolling frame time history
 //
 // CALLED BY:
-//   - crates/gargantua-app/src/app.rs::App::render_frame()
+//   - crates/gargantua-core/src/app.rs::App::render_frame()
 //       — calls AdaptiveQuality::update() each frame
 //   - crates/gargantua-render/src/pipelines/ray_march.rs
 //       — reads AdaptiveQuality::current_spp()

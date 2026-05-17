@@ -44,7 +44,7 @@
 //   - gpu/context.rs         → GpuContext
 //
 // INBOUND (who uses Denoiser):
-//   - video/offline/renderer.rs → calls Denoiser::best_available() at startup,
+//   - crates/gargantua-video/src/offline/renderer.rs → calls Denoiser::best_available() at startup,
 //                                  calls denoiser.denoise() per frame when enabled
 //
 // NOTES:

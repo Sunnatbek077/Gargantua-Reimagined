@@ -77,8 +77,8 @@
 //     → bake step 1: geodesic::let_baker::bake(...)
 //
 // NOTE FOR AI:
-//   File is named let_baker.rs (visible in screenshot) but logically
-//   it is the "LUT baker" for geodesics — lut_baker.rs conceptually.
+//   Geodesic LUT baker (LET = light escape torus parameterisation).
+//   Older comments may say "lut_baker"; the on-disk module is let_baker.rs.
 //   EXR output: width = geo_impact_steps, height = geo_spin_steps.
 //   GPU workgroup size in bake.wgsl: (16, 16, 1).
 //   Total dispatch: (impact_steps/16, spin_steps/16, 1).

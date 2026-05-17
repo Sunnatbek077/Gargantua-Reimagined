@@ -61,7 +61,7 @@
 //   gargantua_app::state::{PhysicsState, RenderStats, AppState}
 //
 // USED BY:
-//   crates/gargantua-app/src/app.rs
+//   crates/gargantua-core/src/app.rs
 //     → hud.draw(ctx, &physics, &render_stats, &mut app_state) each frame
 //
 // NOTE FOR AI:
