@@ -1,6 +1,20 @@
-// =============================================================================
 // FILE: crates/gargantua-video/src/config.rs
-// (Full comment is in lut_3d.rs combined comment file — see that file for details)
-// This stub confirms the file exists at the correct path.
-// See lut_3d.rs for the complete documentation block.
-// =============================================================================
+
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct OfflineConfig {
+    pub width:  u32,
+    pub height: u32,
+    pub fps:    u32,
+}
+
+impl Default for OfflineConfig {
+    fn default() -> Self {
+        Self {
+            width:  1920,
+            height: 1080,
+            fps:    60,
+        }
+    }
+}

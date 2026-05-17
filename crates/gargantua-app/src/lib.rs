@@ -44,3 +44,10 @@
 //   - This crate contains NO rendering logic itself; it only orchestrates.
 //   - On WASM, main.rs is replaced by a #[wasm_bindgen(start)] entry function.
 // =============================================================================
+
+pub mod errors;
+pub mod plugin;
+pub mod state;
+pub mod systems;
+
+pub use errors::AppError;

@@ -1,0 +1,10 @@
+[package]
+name = "gargantua-physics"
+version = "0.1.0"
+edition = "2021"
+description = "Kerr metric, geodesics, accretion, relativistic effects"
+
+[dependencies]
+thiserror = { workspace = true }
+serde = { workspace = true }
+bytemuck = { workspace = true }

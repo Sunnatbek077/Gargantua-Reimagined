@@ -42,3 +42,16 @@
 //   The render crate loads these assets at startup — it never runs
 //   the bake pipeline itself.
 // ============================================================
+
+#![deny(unsafe_code)]
+
+pub mod cache;
+pub mod errors;
+pub mod geodesic;
+pub mod irradiance;
+pub mod noise;
+pub mod scheduler;
+pub mod spectrum;
+
+pub use errors::{BakeError, BakeResult};
+pub use scheduler::{BakeParams, BakeScheduler};

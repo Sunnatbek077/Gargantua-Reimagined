@@ -40,7 +40,7 @@
 #     toml                — TOML parsing (preset files: m87.toml, etc.)
 #     bytemuck            — Pod/Zeroable derive for safe GPU buffer casting
 #     rayon               — data-parallel iterators (bake pipeline)
-#     rhai                — embedded scripting engine (user plugin system)
+#     mlua                — Lua 5.4 embedding (plugin scripting)
 #     notify              — filesystem watcher (WGSL hot-reload in dev)
 #     half                — f16 type support (HDR textures, EXR images)
 #     image               — image I/O (EXR, PNG, HDR)
@@ -72,7 +72,7 @@
 #   - wasm-bindgen version must match the wasm-pack CLI version used in CI
 #   - wgpu version is tightly coupled to the naga shader validator version
 #   - glam must have the "bytemuck" feature enabled for GPU buffer usage
-#   - rhai is used exclusively by crates/gargantua-app/src/plugin/scripting.rs
+#   - mlua is used exclusively by crates/gargantua-app/src/plugin/scripting.rs
 #   - notify is used only in dev builds via crates/gargantua-render/src/shader_reload.rs
 # =============================================================================
 
@@ -90,27 +90,38 @@ members = [
 ]
 
 [workspace.dependencies]
-wgpu               = "X.X"
-winit              = "X.X"
-egui               = "X.X"
-egui-wgpu          = "X.X"
-wasm-bindgen       = "X.X"
-web-sys            = "X.X"
-tracing            = "X.X"
-tracing-subscriber = "X.X"
-thiserror          = "X.X"
-anyhow             = "X.X"
-serde              = { version = "X.X", features = ["derive"] }
-serde_json         = "X.X"
-toml               = "X.X"
-bytemuck           = { version = "X.X", features = ["derive"] }
-rayon              = "X.X"
-rhai               = "X.X"
-notify             = "X.X"
-half               = "X.X"
-image              = "X.X"
-glam               = { version = "X.X", features = ["bytemuck"] }
-criterion          = { version = "X.X", features = ["html_reports"] }
+wgpu               = "24"
+winit              = "0.30"
+egui               = "0.31"
+egui-wgpu          = "0.31"
+wasm-bindgen       = "0.2"
+web-sys            = "0.3"
+tracing            = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+thiserror          = "2"
+anyhow             = "1"
+serde              = { version = "1", features = ["derive"] }
+serde_json         = "1"
+toml               = "0.8"
+bytemuck           = { version = "1", features = ["derive"] }
+rayon              = "1.10"
+mlua               = { version = "0.10", features = ["lua54", "vendored"] }
+notify             = "7"
+half               = "2.4"
+image              = "0.25"
+glam               = { version = "0.29", features = ["bytemuck"] }
+criterion          = { version = "0.5", features = ["html_reports"] }
+indexmap           = { version = "2", features = ["serde"] }
+tokio              = { version = "1", features = ["sync"] }
+
+gargantua-core     = { path = "crates/gargantua-core" }
+gargantua-physics  = { path = "crates/gargantua-physics" }
+gargantua-bake     = { path = "crates/gargantua-bake" }
+gargantua-render   = { path = "crates/gargantua-render" }
+gargantua-camera   = { path = "crates/gargantua-camera" }
+gargantua-video    = { path = "crates/gargantua-video" }
+gargantua-ui       = { path = "crates/gargantua-ui" }
+gargantua-app      = { path = "crates/gargantua-app" }
 
 [profile.dev]
 opt-level = 1

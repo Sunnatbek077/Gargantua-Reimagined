@@ -104,12 +104,14 @@
 #![allow(clippy::too_many_arguments)]
 
 pub mod bindgroups {
+    pub mod physics;
     pub mod scene;
     pub mod textures;
 }
 
 pub mod pipelines {
     pub mod accretion;
+    pub mod accumulate;
     pub mod geodesic_gpu;
     pub mod lensing;
     pub mod ray_march;

@@ -89,3 +89,17 @@
 //   Drop impl drain is mandatory — skipping it causes wgpu validation
 //   errors ("Buffer X destroyed while still in use") on app exit.
 // ============================================================
+
+use wgpu::{CommandEncoder, Device, Queue};
+
+pub struct FrameBarrier;
+
+impl FrameBarrier {
+    pub fn new(_device: &Device) -> Self {
+        Self
+    }
+
+    pub fn submit(&self, _queue: &Queue, _encoder: &mut CommandEncoder) {}
+
+    pub fn wait(&self) {}
+}

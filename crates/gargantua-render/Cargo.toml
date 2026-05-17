@@ -1,0 +1,21 @@
+[package]
+name = "gargantua-render"
+version = "0.1.0"
+edition = "2021"
+description = "Render pipelines, post-processing, shaders"
+
+[dependencies]
+gargantua-core = { workspace = true }
+gargantua-physics = { workspace = true }
+wgpu = { workspace = true }
+bytemuck = { workspace = true }
+glam = { workspace = true }
+thiserror = { workspace = true }
+
+[features]
+default = []
+hot-reload = ["gargantua-core/hot-reload", "notify"]
+
+[dependencies.notify]
+workspace = true
+optional = true

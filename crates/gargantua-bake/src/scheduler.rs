@@ -98,3 +98,16 @@
 //     Geodesic=0.50, Blackbody=0.05, Doppler=0.10,
 //     BlueNoise=0.10, CurlNoise=0.15, Starmap=0.10
 // ============================================================
+
+use crate::errors::BakeResult;
+
+#[derive(Debug, Clone)]
+pub struct BakeParams;
+
+pub struct BakeScheduler;
+
+impl BakeScheduler {
+    pub fn run(&mut self) -> BakeResult<()> {
+        Ok(())
+    }
+}

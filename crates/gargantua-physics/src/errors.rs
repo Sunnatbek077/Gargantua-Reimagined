@@ -45,3 +45,13 @@
 //   Do NOT create new error enums — add variants here instead.
 //   thiserror v1.x is pinned in Cargo.toml.
 // ============================================================
+
+use thiserror::Error;
+
+#[derive(Debug, Error)]
+pub enum PhysicsError {
+    #[error("physics error: {0}")]
+    Message(String),
+}
+
+pub type PhysicsResult<T> = Result<T, PhysicsError>;

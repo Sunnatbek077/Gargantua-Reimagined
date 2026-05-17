@@ -1,0 +1,14 @@
+[package]
+name = "gargantua-camera"
+version = "0.1.0"
+edition = "2021"
+description = "Camera modes, paths, relativistic effects"
+
+[dependencies]
+glam = { workspace = true }
+thiserror = { workspace = true }
+serde = { workspace = true }
+winit = { workspace = true }
+
+[dev-dependencies]
+approx = "0.5"

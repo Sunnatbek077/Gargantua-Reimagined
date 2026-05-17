@@ -1,0 +1,12 @@
+[package]
+name = "gargantua-video"
+version = "0.1.0"
+edition = "2021"
+description = "Video encode, denoise, offline export"
+
+[dependencies]
+gargantua-core = { workspace = true }
+thiserror = { workspace = true }
+image = { workspace = true }
+half = { workspace = true }
+bytemuck = { workspace = true }

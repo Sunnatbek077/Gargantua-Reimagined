@@ -54,3 +54,15 @@
 //   GpuCompute wraps wgpu error strings (wgpu errors are not Clone/Send
 //   so they are converted to String before storing).
 // ============================================================
+
+use thiserror::Error;
+
+#[derive(Debug, Error)]
+pub enum BakeError {
+    #[error("bake cancelled")]
+    Cancelled,
+    #[error("bake failed: {0}")]
+    Failed(String),
+}
+
+pub type BakeResult<T> = Result<T, BakeError>;

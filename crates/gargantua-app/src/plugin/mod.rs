@@ -59,3 +59,9 @@
 //   - WASM builds support plugins compiled to wasm32; scripting.rs uses
 //     a wasm_bindgen bridge so JavaScript plugins can also be registered.
 // =============================================================================
+
+pub mod registry;
+pub mod scripting;
+
+pub use registry::PluginRegistry;
+pub use scripting::ScriptingPlugin;

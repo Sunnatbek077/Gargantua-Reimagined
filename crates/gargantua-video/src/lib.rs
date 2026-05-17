@@ -1,6 +1,12 @@
-// =============================================================================
 // FILE: crates/gargantua-video/src/lib.rs
-// (Full comment is in lut_3d.rs combined comment file — see that file for details)
-// This stub confirms the file exists at the correct path.
-// See lut_3d.rs for the complete documentation block.
-// =============================================================================
+// See header comments in sub-modules for full specifications.
+
+pub mod color;
+pub mod config;
+pub mod denoise;
+pub mod encode;
+pub mod errors;
+pub mod offline;
+pub mod realtime;
+
+pub use errors::VideoError;

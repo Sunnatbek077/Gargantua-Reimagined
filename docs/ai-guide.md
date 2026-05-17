@@ -25,7 +25,7 @@ This repository is being built **specification-first**: many `.rs` files contain
 Engine loop:     crates/gargantua-core/src/app.rs
 Core modules:    crates/gargantua-core/src/lib.rs
 Composition:     crates/gargantua-app/src/lib.rs
-Binary (future): PLANNED crates/gargantua-app/src/main.rs
+Binary: crates/gargantua-app/src/main.rs (stub until event loop is wired)
 
 SimState:        crates/gargantua-app/src/state/sim_state.rs
 Event bus:       crates/gargantua-app/src/state/event_bus.rs
@@ -61,6 +61,7 @@ Video encode:    crates/gargantua-video/src/encode/
 | `gargantua-video/src/encoder/*` | `gargantua-video/src/encode/*` |
 | `platform/common/shader_reload.rs` | `gargantua-render/src/shader_reload.rs` |
 | `tests/foo.rs` (bare) | `crates/<crate>/tests/foo.rs` |
+| `github/workflows/` | `.github/workflows/` |
 
 ---
 

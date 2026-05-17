@@ -47,3 +47,13 @@
 //   PresetIo wraps std::io::Error via #[from] for ? operator.
 //   UiResult<T> = Result<T, UiError> is the crate-wide fallible return type.
 // ============================================================
+
+use thiserror::Error;
+
+#[derive(Debug, Error)]
+pub enum UiError {
+    #[error("ui error: {0}")]
+    Message(String),
+}
+
+pub type UiResult<T> = Result<T, UiError>;

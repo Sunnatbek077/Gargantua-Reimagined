@@ -77,3 +77,16 @@
 //   search.rs filters visible controls within the active tab.
 //   Scroll position resets to 0 when switching tabs.
 // ============================================================
+
+pub mod search;
+
+pub mod tabs {
+    pub mod accretion_tab;
+    pub mod bake_tab;
+    pub mod camera_tab;
+    pub mod export_tab;
+    pub mod physics_tab;
+    pub mod plugin_tab;
+    pub mod postfx_tab;
+    pub mod render_tab;
+}

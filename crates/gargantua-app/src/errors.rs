@@ -37,3 +37,23 @@
 //   - plugin/mod.rs  → wraps plugin failures into AppError::Plugin
 //   - state/url_serde.rs → wraps decode failures into AppError::StateDeserialize
 // =============================================================================
+
+use thiserror::Error;
+
+#[derive(Debug, Error)]
+pub enum AppError {
+    #[error(transparent)]
+    Core(#[from] gargantua_core::errors::CoreError),
+    #[error(transparent)]
+    Physics(#[from] gargantua_physics::errors::PhysicsError),
+    #[error(transparent)]
+    Video(#[from] gargantua_video::errors::VideoError),
+    #[error("plugin: {0}")]
+    Plugin(String),
+    #[error("state deserialize: {0}")]
+    StateDeserialize(String),
+    #[error(transparent)]
+    Io(#[from] std::io::Error),
+}
+
+pub type AppResult<T> = Result<T, AppError>;

@@ -46,3 +46,17 @@
 //   crate root attribute #![deny(unsafe_code)] applies to
 //   the entire gargantua-ui crate — never add `unsafe` blocks here.
 // ============================================================
+
+#![deny(unsafe_code)]
+#![warn(missing_docs)]
+
+pub mod accessibility;
+pub mod errors;
+pub mod hud;
+pub mod i18n;
+pub mod menu;
+pub mod overlay;
+pub mod presets;
+pub mod shortcuts;
+pub mod theme;
+pub mod widgets;

@@ -35,3 +35,13 @@
 //   No structs, no functions, no math here.
 //   Every new sub-module must be registered here with `pub mod`.
 // ============================================================
+
+#![deny(unsafe_code)]
+#![warn(missing_docs)]
+
+pub mod accretion;
+pub mod effects;
+pub mod errors;
+pub mod geodesic;
+pub mod metric;
+pub mod units;

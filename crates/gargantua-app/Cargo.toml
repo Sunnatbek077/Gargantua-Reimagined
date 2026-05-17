@@ -1,0 +1,25 @@
+[package]
+name = "gargantua-app"
+version = "0.1.0"
+edition = "2021"
+description = "Application composition root: SimState, plugins, systems"
+
+[dependencies]
+gargantua-core = { workspace = true }
+gargantua-physics = { workspace = true }
+gargantua-bake = { workspace = true }
+gargantua-render = { workspace = true }
+gargantua-camera = { workspace = true }
+gargantua-video = { workspace = true }
+gargantua-ui = { workspace = true }
+thiserror = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+indexmap = { workspace = true }
+mlua = { workspace = true }
+
+[[bin]]
+name = "gargantua"
+path = "src/main.rs"
+required-features = []

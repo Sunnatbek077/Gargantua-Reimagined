@@ -1,0 +1,12 @@
+[package]
+name = "gargantua-bake"
+version = "0.1.0"
+edition = "2021"
+description = "Offline LUT and asset baking"
+
+[dependencies]
+gargantua-core = { workspace = true }
+gargantua-physics = { workspace = true }
+thiserror = { workspace = true }
+rayon = { workspace = true }
+serde = { workspace = true }

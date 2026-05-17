@@ -43,3 +43,12 @@
 //   gargantua-core owns GPU, frame graph, and platform HAL.
 //   Register every new top-level module here with `pub mod`.
 // ============================================================
+
+pub mod app;
+pub mod clock;
+pub mod errors;
+pub mod frame;
+pub mod gpu;
+pub mod logging;
+pub mod platform;
+pub mod quality;
